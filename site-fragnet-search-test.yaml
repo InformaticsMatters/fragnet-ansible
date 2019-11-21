@@ -3,4 +3,4 @@
 - hosts: localhost
   tasks:
   - include_role:
-      name: test
+      name: fragnet-search-test

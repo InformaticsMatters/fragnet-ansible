@@ -1,0 +1,45 @@
+---
+
+# Set to 'no' to undeploy Fragnet Search
+fs_deploy: yes
+
+# Main application variables
+fs_project: fragnet-search
+fs_sa: fragnet-search
+fs_image_tag: latest
+fs_route: fragnet-search
+fs_keycloak_client_id: fragnet-search
+fs_client_secret: "{{ lookup('env', 'FRAGNET_CLIENT_SECRET') }}"
+
+# Route and Certificate creation
+fs_enable_route: yes
+fs_enable_acme: False
+
+fs_pod_ready_timeout: 600
+
+# Provided by our chosen AWX/Tower OpenShift credentials
+# (openshift credential type)...
+
+okd_master_hostname: prod.openrisknet.org
+okd_route_basename: prod.openrisknet.org
+okd_admin: "{{ lookup('env', 'OS_ADMIN') }}"
+okd_admin_password: "{{ lookup('env', 'OS_ADMIN_PASSWORD') }}"
+okd_user: "{{ lookup('env', 'OS_USER') }}"
+okd_user_password: "{{ lookup('env', 'OS_USER_PASSWORD') }}"
+
+# Provided by our chosen AWX/Tower Keycloak credentials
+# (keycloak credential type)...
+
+keycloak_server_url: "{{ lookup('env', 'KEYCLOAK_SERVER_URL') }}"
+keycloak_admin: "{{ lookup('env', 'KEYCLOAK_ADMIN') }}"
+keycloak_admin_password: "{{ lookup('env', 'KEYCLOAK_ADMIN_PASSWORD') }}"
+keycloak_public_key: "{{ lookup('env', 'KEYCLOAK_PUBLIC_KEY') }}"
+keycloak_secret: "{{ lookup('env', 'KEYCLOAK_SECRET') }}"
+keycloak_realm: "{{ lookup('env', 'KEYCLOAK_REALM') }}"
+
+# Provided by our chosen AWX/Tower graph credentials
+# (graph credential type)...
+
+graph_hostname: "{{ lookup('env', 'NEO4J_SERVER') }}"
+graph_user: neo4j
+graph_password: "{{ lookup('env', 'NEO4J_PASSWORD') }}"
