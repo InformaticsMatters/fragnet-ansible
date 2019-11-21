@@ -12,7 +12,7 @@
 
 - name: Set serach engine URLs
   set_fact:
-    fs_ping: https://{{ fragnet_search_domain }}/fragnet-search/rest/ping
+    fs_ping: https://{{ fragnet_hostname }}/fragnet-search/rest/ping
     fs_token: "{{ keycloak_server_url }}/realms/{{ keycloak_realm }}/protocol/openid-connect/token"
 
 - name: Display search engine ping URL
@@ -70,7 +70,7 @@
   set_fact:
     query_url: https://{{ api }}/search/suppliers
   vars:
-    api: "{{ fragnet_search_domain }}/fragnet-search/rest/{{ fragnet_api }}"
+    api: "{{ fragnet_hostname }}/fragnet-search/rest/{{ fragnet_api }}"
 
 - name: Display query URL
   debug:

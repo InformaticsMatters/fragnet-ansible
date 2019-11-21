@@ -1,20 +1,22 @@
 ---
 
-# The fragnet search URL
-# Define for the server you're actually testing.
-fragnet_search_domain: "{{ lookup('env', 'FRAGNET_HOSTNAME') }}"
-# A valid username and password
-fragnet_username: "{{ lookup('env', 'FRAGNET_USERNAME') }}"
-fragnet_password: "{{ lookup('env', 'FRAGNET_PASSWORD') }}"
+# The identity of the deployed graph.
+# This essentially selects a set of graph-specific tests.
+fragnet_deployed_graph_id: SetMe
 
 # Fragnet API version
 fragnet_api: v2
 
-# The ID (used to select graph-specific tests).
-fragnet_deployed_graph_id: toxcast_2019_10_24
+# Credentials (usually injected by AWX/Ansible Tower) -------------------------
+
+# Fragnet (user) credentials.
+# Normally provided by credentials resident in AWX.
+fragnet_hostname: "{{ lookup('env', 'FRAGNET_HOSTNAME') }}"
+# A valid username and password
+fragnet_username: "{{ lookup('env', 'FRAGNET_USERNAME') }}"
+fragnet_password: "{{ lookup('env', 'FRAGNET_PASSWORD') }}"
 
 # Keycloak credentials.
 # Normally provided by credentials resident in AWX.
-
 keycloak_server_url: ''
 keycloak_realm: ''

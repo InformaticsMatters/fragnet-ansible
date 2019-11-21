@@ -62,7 +62,7 @@
   set_fact:
     availability_url: https://{{ api }}/search/availability/{{ smiles|urlencode }}
   vars:
-    api: "{{ fragnet_search_domain }}/fragnet-search/rest/{{ fragnet_api }}"
+    api: "{{ fragnet_hostname }}/fragnet-search/rest/{{ fragnet_api }}"
     smiles: "{{ molecule.molecule }}"
 
 - name: Display availability query
