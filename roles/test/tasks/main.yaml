@@ -94,7 +94,7 @@
 
 # A simply sanity check before going any further...
 
-- name: Make sure there's at leat one supplier
+- name: Make sure there's at least one supplier
   assert:
     that: fragnet_db_suppliers|length > 0
 
