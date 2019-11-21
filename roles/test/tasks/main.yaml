@@ -105,7 +105,7 @@
   include_vars: "{{ lookup('first_found', possible_files) }}"
   vars:
     possible_files:
-    - roles/fragnet/vars/test_{{ graph_name }}.yaml
+    - roles/fragnet/vars/test_{{ fragnet_deployed_graph_id }}.yaml
     - roles/fragnet/vars/test_default.yaml
 
 # If the user's defined an expected set of suppliers, then
