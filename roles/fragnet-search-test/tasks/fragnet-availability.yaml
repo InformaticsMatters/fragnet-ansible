@@ -46,6 +46,10 @@
 # Splice code and SMILES together to form a string of "code/smiles"...
 # This just makes comparison of results a little easier.
 
+- name: Reset expected results
+  set_fact:
+    expected: []
+
 - name: Splice expected codes and SMILES
   set_fact:
     expected: "{{ expected|default([]) + [exp_values.0 + '/' + exp_values.1] }}"
@@ -91,6 +95,10 @@
     available_smiles: "{{ availability_result|json_query(query) }}"
   vars:
     query: "json.items[*].smiles"
+
+- name: Reset expected availability
+  set_fact:
+    available: []
 
 - name: Splice available codes and SMILES
   set_fact:
