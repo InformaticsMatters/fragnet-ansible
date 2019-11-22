@@ -9,10 +9,6 @@
     - fragnet_db_suppliers is defined
     - molecule is defined
 
-- name: Dispaly molecule object
-  debug:
-    var: molecule
-
 - name: Display molecule being tested
   debug:
     msg: Testing availability for '{{ molecule.molecule }}'...
@@ -127,7 +123,7 @@
   debug:
     var: available
 
-- name: Assert the number of expected results
+- name: Assert the number of expected results ({{ expected|length }})
   assert:
     that:
     - available|length == expected|length

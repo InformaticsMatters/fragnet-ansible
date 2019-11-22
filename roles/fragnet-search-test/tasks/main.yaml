@@ -112,7 +112,7 @@
 # it, and the fragnet_db_suppliers must match.
 # We fist compare the size fo the lists and then their (sorted) content.
 
-- name: Check supplier count
+- name: Check supplier count ({{ fragnet_expected_suppliers|length }})
   assert:
     that: fragnet_expected_suppliers|length == fragnet_db_suppliers|length
   when: fragnet_expected_suppliers|length > 0
