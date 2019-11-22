@@ -1,0 +1,14 @@
+---
+
+# Try to remove the route.
+# The project must exist.
+
+- name: Login (user)
+  command: oc login https://{{ okd_master_hostname }} -u {{ okd_user }} -p {{ okd_user_password }}
+  changed_when: False
+
+- name: Deploy application route
+  k8s:
+    definition: "{{ lookup('template', 'route.yaml.j2') }}"
+    wait: yes
+    state: absent
