@@ -37,3 +37,9 @@ availability_tests:
     results:
     - code: CHEMSPACE-BB:CSC011830386
       smiles: N[C@H]1CCCNC1
+- molecule: CN1CCOCC1
+  results:
+  - supplier: MolPort
+    results:
+    - code: TOXCAST:DTXSID9029146
+      smiles: CN1CCOCC1
