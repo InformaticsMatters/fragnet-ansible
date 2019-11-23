@@ -18,7 +18,7 @@
     that: namespace_info.resources|length > 0
     fail_msg: Namespace '{{ fs_project }}' does not exist
 
-- name: Deploy application route
+- name: Remove application route
   k8s:
     definition: "{{ lookup('template', 'route.yaml.j2') }}"
     state: absent

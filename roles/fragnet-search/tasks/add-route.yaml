@@ -25,7 +25,7 @@
     namespace: "{{ fs_project }}"
   register: route_result
 
-- name: Deploy application route
+- name: Add application route
   k8s:
     definition: "{{ lookup('template', 'route.yaml.j2') }}"
     wait: yes
