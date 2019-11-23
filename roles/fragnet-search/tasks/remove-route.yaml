@@ -7,8 +7,19 @@
   command: oc login https://{{ okd_master_hostname }} -u {{ okd_user }} -p {{ okd_user_password }}
   changed_when: False
 
+- name: Get expected namespace
+  k8s_facts:
+    kind: Namespace
+    name: "{{ fs_project }}"
+  register: namespace_info
+
+- name: Assert namespace exists
+  assert:
+    that: namespace_info.resources|length > 0
+    fail_msg: Namespace '{{ fs_project }}' does not exist
+
 - name: Deploy application route
   k8s:
     definition: "{{ lookup('template', 'route.yaml.j2') }}"
-    wait: yes
     state: absent
+    wait: yes

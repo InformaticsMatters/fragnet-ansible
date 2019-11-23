@@ -1,13 +1,32 @@
 ---
 
-# Try to add the route.
-# The project must exist.
+# Try to add the route (if it does not exist).
+# The project is expected to exist.
 
 - name: Login (user)
   command: oc login https://{{ okd_master_hostname }} -u {{ okd_user }} -p {{ okd_user_password }}
   changed_when: False
 
+- name: Get expected namespace
+  k8s_facts:
+    kind: Namespace
+    name: "{{ fs_project }}"
+  register: namespace_info
+
+- name: Assert namespace exists
+  assert:
+    that: namespace_info.resources|length > 0
+    fail_msg: Namespace '{{ fs_project }}' does not exist
+
+- name: Get expected Route
+  k8s_facts:
+    kind: Route
+    name: fragnet-search
+    namespace: "{{ fs_project }}"
+  register: route_result
+
 - name: Deploy application route
   k8s:
     definition: "{{ lookup('template', 'route.yaml.j2') }}"
     wait: yes
+  when: route_result.resources|length == 0
