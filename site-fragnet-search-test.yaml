@@ -1,6 +1,14 @@
 ---
 
+# Test fragnet search
+#
+# We don't care about certificate validation
+# as the route may be temporary (without a certificate)
+
 - hosts: localhost
+  module_defaults:
+    uri:
+      validate_certs: no
   tasks:
   - include_role:
       name: fragnet-search-test
