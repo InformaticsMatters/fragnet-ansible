@@ -11,9 +11,9 @@ fs_route: fragnet-search
 fs_keycloak_client_id: fragnet-search
 fs_client_secret: "{{ lookup('env', 'FRAGNET_CLIENT_SECRET') }}"
 
-# Route and Certificate creation
+# Route and (ACME) Certificate creation
 fs_enable_route: no
-fs_enable_acme: False
+fs_enable_acme: no
 
 fs_pod_ready_timeout: 600
 

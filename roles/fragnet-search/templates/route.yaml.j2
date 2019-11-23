@@ -5,7 +5,7 @@ metadata:
   name: fragnet-search
   namespace: {{ fs_project }}
   annotations:
-    kubernetes.io/tls-acme: "{{ fs_enable_acme }}"
+    kubernetes.io/tls-acme: "{{ fs_enable_acme|ternary('True', 'False') }}"
 spec:
   host: {{ fs_route }}.{{ okd_route_basename }}
   to:
