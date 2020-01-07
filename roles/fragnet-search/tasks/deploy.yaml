@@ -53,9 +53,12 @@
     assert:
       that: graph_s_result.resources|length == 1
 
-  - name: Set ne4oj credential facts from secrets
+  - name: Set neo4j_auth fact from secrets
     set_fact:
       graph_neo4j_auth_fact: "{{ graph_s_result.resources[0].data.neo4j_auth|b64decode }}"
+
+  - name: Get neo4j credential facts from neo4j_auth fact
+    set_fact:
       graph_user_fact: "{{ graph_neo4j_auth_fact.split('/')[0] }}"
       graph_password_fact: "{{ graph_neo4j_auth_fact.split('/')[1] }}"
 
