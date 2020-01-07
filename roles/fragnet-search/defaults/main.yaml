@@ -19,16 +19,6 @@ fs_enable_acme: no
 fs_node_purpose: application
 fs_pod_ready_timeout: 600
 
-# Provided by our chosen AWX/Tower OpenShift credentials
-# (openshift credential type)...
-
-okd_master_hostname: prod.openrisknet.org
-okd_route_basename: prod.openrisknet.org
-okd_admin: "{{ lookup('env', 'OS_ADMIN') }}"
-okd_admin_password: "{{ lookup('env', 'OS_ADMIN_PASSWORD') }}"
-okd_user: "{{ lookup('env', 'OS_USER') }}"
-okd_user_password: "{{ lookup('env', 'OS_USER_PASSWORD') }}"
-
 # Provided by our chosen AWX/Tower Keycloak credentials
 # (keycloak credential type)...
 
