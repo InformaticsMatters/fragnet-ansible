@@ -1,6 +1,8 @@
 ---
 
-- hosts: cli_node
+# Removes the application Route
+
+- hosts: localhost
   tasks:
   - include_role:
       name: fragnet-search

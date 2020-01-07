@@ -3,11 +3,11 @@ kind: Route
 apiVersion: v1
 metadata:
   name: fragnet-search
-  namespace: {{ fs_project }}
+  namespace: {{ fs_namespace }}
   annotations:
     kubernetes.io/tls-acme: "{{ fs_enable_acme|ternary('True', 'False') }}"
 spec:
-  host: {{ fs_route }}.{{ okd_route_basename }}
+  host: {{ fs_hostname }}
   to:
     kind: Service
     name: fragnet-search

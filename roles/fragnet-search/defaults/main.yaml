@@ -1,31 +1,34 @@
 ---
 
-# Set to 'no' to undeploy Fragnet Search
-fs_deploy: yes
+# Set to 'absent' to undeploy Fragnet Search
+fs_state: present
 
 # Main application variables
-fs_project: fragnet-search
+fs_namespace: fragnet-search
 fs_sa: fragnet-search
+fs_sa_psp: im-unrestricted
 fs_image_tag: latest
-fs_route: fragnet-search
-fs_keycloak_client_id: fragnet-search
-fs_client_secret: "{{ lookup('env', 'FRAGNET_CLIENT_SECRET') }}"
+fs_hostname: "fragnet-search.informaticsmatters.org"
+fs_cert_issuer: staging
+fs_keycloak_client_id: fragnet-search-ad45df62es
 
 # Route and (ACME) Certificate creation
-fs_enable_route: no
+fs_enable_route: yes
 fs_enable_acme: no
 
+fs_node_purpose: application
 fs_pod_ready_timeout: 600
 
-# Provided by our chosen AWX/Tower OpenShift credentials
-# (openshift credential type)...
+# We don't use the Kubernetes credentials directly,
+# but we load them into variables here from their
+# expected environment variables so that we can assert they've been set.
+#
+# If we're using OpenShift credentials these environment variables
+# will not be set and we will therefore rely on them being set
+# from the 'login.yaml' play.
 
-okd_master_hostname: prod.openrisknet.org
-okd_route_basename: prod.openrisknet.org
-okd_admin: "{{ lookup('env', 'OS_ADMIN') }}"
-okd_admin_password: "{{ lookup('env', 'OS_ADMIN_PASSWORD') }}"
-okd_user: "{{ lookup('env', 'OS_USER') }}"
-okd_user_password: "{{ lookup('env', 'OS_USER_PASSWORD') }}"
+k8s_auth_host: "{{ lookup('env', 'K8S_AUTH_HOST') }}"
+k8s_auth_api_key: "{{ lookup('env', 'K8S_AUTH_API_KEY') }}"
 
 # Provided by our chosen AWX/Tower Keycloak credentials
 # (keycloak credential type)...
@@ -37,9 +40,13 @@ keycloak_public_key: "{{ lookup('env', 'KEYCLOAK_PUBLIC_KEY') }}"
 keycloak_secret: "{{ lookup('env', 'KEYCLOAK_SECRET') }}"
 keycloak_realm: "{{ lookup('env', 'KEYCLOAK_REALM') }}"
 
-# Provided by our chosen AWX/Tower graph credentials
-# (graph credential type)...
-
-graph_hostname: "{{ lookup('env', 'NEO4J_SERVER') }}"
-graph_user: neo4j
-graph_password: "{{ lookup('env', 'NEO4J_PASSWORD') }}"
+# The namespace and service name of the graph instance
+# We use this to construct the bolt service name
+# and use the namespace to collect the graph credentials
+# (which are stored in a secret in the namespace).
+#
+# For most deployments this does nto have to be set
+# as it is expected that the graph database in in the
+# 'graph' namespace with bolt service on 'graph.graph.svc'.
+graph_namespace: graph
+graph_service: graph

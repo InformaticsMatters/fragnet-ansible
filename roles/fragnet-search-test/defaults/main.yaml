@@ -4,8 +4,12 @@
 # This essentially selects a set of graph-specific tests.
 fragnet_deployed_graph_id: SetMe
 
-# Fragnet API version
+# Fragnet API version and Keycloak Client ID
 fragnet_api: v2
+fragnet_keycloak_client_id: fragnet-search-ad45df62es
+
+# Validate the search URL certificate?
+fragnet_validate_certs: no
 
 # Credentials (usually injected by AWX/Ansible Tower) -------------------------
 

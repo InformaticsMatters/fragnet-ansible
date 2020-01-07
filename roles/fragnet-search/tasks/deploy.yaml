@@ -1,83 +1,100 @@
 ---
 
-# Create the project
+- block:
 
-- name: Login (user)
-  command: oc login https://{{ okd_master_hostname }} -u {{ okd_user }} -p {{ okd_user_password }}
-  changed_when: False
+  # Create the namespace and other basic materials
+  #
+  # For the deployment to work
+  # the anticipated infrastructure-deployed PSP is used.
 
-- name: Deploy Project
-  k8s:
-    definition: "{{ lookup('template', item) }}"
-  loop:
-  - project.yaml.j2
+  - name: Create namespace
+    k8s:
+      definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+      wait: yes
+    loop:
+    - namespace
+    - serviceaccount
+    - role
+    - rolebinding
 
-# Create the service account
-#
-# The Fragnet Search service account needs 'anyuid'
-# as its container uses tomcat
+  # Configure the Fragnet Search Keycloak Client
 
-- name: Login (admin)
-  command: oc login https://{{ okd_master_hostname }} -u {{ okd_admin }} -p {{ okd_admin_password }}
-  changed_when: False
+  - name: Add Keycloak Fragnet Search Client
+    local_action:
+      module: keycloak_client
+      auth_client_id: admin-cli
+      auth_keycloak_url: "{{ keycloak_server_url }}"
+      auth_realm: master
+      auth_username: "{{ keycloak_admin }}"
+      auth_password: "{{ keycloak_admin_password }}"
+      realm: "{{ keycloak_realm }}"
+      client_id: "{{ fs_keycloak_client_id }}"
+      protocol: openid-connect
+      base_url: https://{{ fs_hostname }}
+      public_client: yes
+      service_accounts_enabled: yes
+      direct_access_grants_enabled: yes
+      standard_flow_enabled: yes
+      default_roles:
+      - fragnet-search
 
-- name: Move to Fragnet Search Project
-  command: oc project {{ fs_project }}
-  changed_when: False
+  # Extract secrets from the graph namespace
+  # and then deploy the application
 
-- name: Deploy SA
-  k8s:
-    definition: "{{ lookup('template', 'service-account.yaml.j2') }}"
+  - name: Get graph secrets (from namespace '{{ graph_namespace }}')
+    k8s_facts:
+      kind: Secret
+      api_version: v1
+      name: graph-secrets
+      namespace: "{{ graph_namespace }}"
+    register: graph_s_result
 
-- name: Add anyuid to SA
-  command: oc adm policy add-scc-to-user anyuid -z {{ fs_sa }}
+  - name: Check graph secrets
+    assert:
+      that: graph_s_result.resources|length == 1
 
-# Configure the Fragnet Search Keycloak Client
+  - name: Set neo4j_auth fact from secrets
+    set_fact:
+      graph_neo4j_auth_fact: "{{ graph_s_result.resources[0].data.neo4j_auth|b64decode }}"
 
-- name: Add Keycloak Fragnet Search Client
-  local_action:
-    module: keycloak_client
-    auth_client_id: admin-cli
-    auth_keycloak_url: "{{ keycloak_server_url }}"
-    auth_realm: master
-    auth_username: "{{ keycloak_admin }}"
-    auth_password: "{{ keycloak_admin_password }}"
-    realm: "{{ keycloak_realm }}"
-    client_id: "{{ fs_keycloak_client_id }}"
-    protocol: openid-connect
-    base_url: https://{{ fs_route }}.{{ okd_route_basename }}
-    public_client: yes
-    service_accounts_enabled: yes
-    direct_access_grants_enabled: yes
-    standard_flow_enabled: yes
-    default_roles:
-    - fragnet-search
+  - name: Get neo4j credential facts from neo4j_auth fact
+    set_fact:
+      graph_user_fact: "{{ graph_neo4j_auth_fact.split('/')[0] }}"
+      graph_password_fact: "{{ graph_neo4j_auth_fact.split('/')[1] }}"
 
-# Deploy the application
+  - name: Check graph credentials
+    assert:
+      that:
+      - graph_user_fact|length > 0
+      - graph_password_fact|length > 0
 
-- name: Deploy application objects
-  k8s:
-    definition: "{{ lookup('template', item) }}"
-    wait: yes
-  loop:
-  - configmap.yaml.j2
-  - deployment.yaml.j2
-  - service.yaml.j2
+  - name: Deploy Fragnet Search objects
+    k8s:
+      definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+      wait: yes
+      wait_timeout: "{{ fs_pod_ready_timeout }}"
+    loop:
+    - configmap
+    - deployment
+    - service
 
-# Wait for running pods...
+  - name: Deploy Fragnet Search Route (OpenShift)
+    k8s:
+      definition: "{{ lookup('template', 'route.yaml.j2') }}"
+      wait: yes
+    when:
+    - okd_master_hostname is defined
+    - fs_enable_route|bool
 
-- name: Wait for Pods to become ready
-  shell: oc get po | grep {{ item }} | grep -v deploy | grep 1/1 > /dev/null
-  delay: 20
-  retries: "{{ (fs_pod_ready_timeout|int / 20)|int }}"
-  register: result
-  until: result.rc == 0
-  loop:
-  - fragnet-search
-  changed_when: False
+  - name: Deploy Fragnet Search Ingress (Kubernetes)
+    k8s:
+      definition: "{{ lookup('template', 'ingress.yaml.j2') }}"
+      wait: yes
+    when:
+    - okd_master_hostname is not defined
+    - fs_enable_route|bool
 
-- name: Deploy application route
-  k8s:
-    definition: "{{ lookup('template', 'route.yaml.j2') }}"
-    wait: yes
-  when: fs_enable_route|bool
+  module_defaults:
+    group/k8s:
+      host: "{{ k8s_auth_host }}"
+      api_key: "{{ k8s_auth_api_key }}"
