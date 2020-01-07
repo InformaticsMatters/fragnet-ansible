@@ -19,6 +19,17 @@ fs_enable_acme: no
 fs_node_purpose: application
 fs_pod_ready_timeout: 600
 
+# We don't use the Kubernetes credentials directly,
+# but we load them into variables here from their
+# expected environment variables so that we can assert they've been set.
+#
+# If we're using OpenShift credentials these environment variables
+# will not be set and we will therefore rely on them being set
+# from the 'login.yaml' play.
+
+k8s_auth_host: "{{ lookup('env', 'K8S_AUTH_HOST') }}"
+k8s_auth_api_key: "{{ lookup('env', 'K8S_AUTH_API_KEY') }}"
+
 # Provided by our chosen AWX/Tower Keycloak credentials
 # (keycloak credential type)...
 
