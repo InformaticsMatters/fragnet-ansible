@@ -9,7 +9,7 @@ fs_sa: fragnet-search
 fs_sa_psp: im-unrestricted
 fs_image_name: fragnet-all
 fs_image_tag: latest
-fs_hostname: "fragnet-search.informaticsmatters.org"
+fs_hostname: fragnet-search.informaticsmatters.org
 fs_cert_issuer: staging
 fs_keycloak_client_id: fragnet-search-ad45df62es
 
