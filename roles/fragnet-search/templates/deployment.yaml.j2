@@ -32,7 +32,7 @@ spec:
 
       containers:
       - name: fragnet-search
-        image: squonk/fragnet-services:{{ fs_image_tag }}
+        image: squonk/{{ fs_image_name }}:{{ fs_image_tag }}
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

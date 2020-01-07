@@ -7,6 +7,7 @@ fs_state: present
 fs_namespace: fragnet-search
 fs_sa: fragnet-search
 fs_sa_psp: im-unrestricted
+fs_image_name: fragnet-all
 fs_image_tag: latest
 fs_hostname: "fragnet-search.informaticsmatters.org"
 fs_cert_issuer: staging
