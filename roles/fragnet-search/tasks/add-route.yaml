@@ -1,5 +1,7 @@
 ---
 
+- include_tasks: prep.yaml
+
 # If it looks like we're deploying to OpenShift
 # we need to use the k8s authentication module to login
 # and obtain an API key.

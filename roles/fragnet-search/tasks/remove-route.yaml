@@ -1,5 +1,7 @@
 ---
 
+- include_tasks: prep.yaml
+
 # Try to remove the route.
 # The namespace must exist.
 

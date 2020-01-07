@@ -1,18 +1,6 @@
 ---
 
-# Expose ansible version
-- debug:
-    var: ansible_version.full
-
-# Basic pre-playbook prerequisites.
-# We need the openshift/kubernetes module amongst other things...
-
-- name: Install prerequisite Python modules
-  pip:
-    name:
-    - openshift==0.10.0
-    - jmespath==0.9.4
-    extra_args: --user
+- include_tasks: prep.yaml
 
 # If it looks like we're deploying to OpenShift
 # we need to use the k8s authentication module to login
