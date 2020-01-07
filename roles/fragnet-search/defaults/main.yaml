@@ -12,17 +12,6 @@ fs_hostname: "fragnet-search.informaticsmatters.org"
 fs_cert_issuer: staging
 fs_keycloak_client_id: fragnet-search-ad45df62es
 
-# The namespace and service name of the graph instance
-# We use this to construct the bolt service name
-# and use the namespace to collect the graph credentials
-# (which are stored in a secret in the namespace).
-#
-# For most deployments this does nto have to be set
-# as it is expected that the graph database in in the
-# 'graph' namespace with bolt service on 'graph.graph.svc'.
-graph_namepsace: graph
-graph_service: graph
-
 # Route and (ACME) Certificate creation
 fs_enable_route: yes
 fs_enable_acme: no
@@ -50,9 +39,13 @@ keycloak_public_key: "{{ lookup('env', 'KEYCLOAK_PUBLIC_KEY') }}"
 keycloak_secret: "{{ lookup('env', 'KEYCLOAK_SECRET') }}"
 keycloak_realm: "{{ lookup('env', 'KEYCLOAK_REALM') }}"
 
-# Provided by our chosen AWX/Tower graph credentials
-# (graph credential type)...
-
-graph_hostname: "{{ lookup('env', 'NEO4J_SERVER') }}"
-graph_user: neo4j
-graph_password: "{{ lookup('env', 'NEO4J_PASSWORD') }}"
+# The namespace and service name of the graph instance
+# We use this to construct the bolt service name
+# and use the namespace to collect the graph credentials
+# (which are stored in a secret in the namespace).
+#
+# For most deployments this does nto have to be set
+# as it is expected that the graph database in in the
+# 'graph' namespace with bolt service on 'graph.graph.svc'.
+graph_namepsace: graph
+graph_service: graph
