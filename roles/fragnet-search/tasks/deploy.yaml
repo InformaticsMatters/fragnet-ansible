@@ -78,11 +78,20 @@
     - deployment
     - service
 
-  - name: Deploy Fragnet Search ingress
+  - name: Deploy Fragnet Search Route (OpenShift)
+    k8s:
+      definition: "{{ lookup('template', 'route.yaml.j2') }}"
+      wait: yes
+    when:
+    - okd_master_hostname is defined
+    - fs_enable_route|bool
+
+  - name: Deploy Fragnet Search Ingress (Kubernetes)
     k8s:
       definition: "{{ lookup('template', 'ingress.yaml.j2') }}"
       wait: yes
     when:
+    - okd_master_hostname is not defined
     - fs_enable_route|bool
 
   module_defaults:
