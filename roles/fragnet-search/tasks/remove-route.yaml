@@ -1,25 +1,57 @@
 ---
 
 # Try to remove the route.
-# The project must exist.
+# The namespace must exist.
 
-- name: Login (user)
-  command: oc login https://{{ okd_master_hostname }} -u {{ okd_user }} -p {{ okd_user_password }}
-  changed_when: False
+# If it looks like we're deploying to OpenShift
+# we need to use the k8s authentication module to login
+# and obtain an API key.
+- include_tasks: login.yaml
+  when: okd_master_hostname is defined
 
-- name: Get expected namespace
-  k8s_facts:
-    kind: Namespace
-    name: "{{ fs_project }}"
-  register: namespace_info
-
-- name: Assert namespace exists
+# A kubernetes (or OpenShift) host and an API key must be set.
+# We will either have authenticated against an OpenShift server
+# or the AWX kubernetes credentials will have injected suitable
+# values for the K8S_AUTH_HOST and K8S_AUTH_API_KEY environment variables.
+# Either way the ansible variables 'k8s_auth_host' and
+# 'k8s_auth_api_key' will have been set.
+- name: Assert authentication
   assert:
-    that: namespace_info.resources|length > 0
-    fail_msg: Namespace '{{ fs_project }}' does not exist
+    that:
+    - k8s_auth_host|length > 0
+    - k8s_auth_api_key|length > 0
 
-- name: Remove application route
-  k8s:
-    definition: "{{ lookup('template', 'route.yaml.j2') }}"
-    state: absent
-    wait: yes
+# Try to add the route (if it does not exist).
+# The namespace is expected to exist.
+
+- block:
+
+  - name: Get expected namespace
+    k8s_facts:
+      kind: Namespace
+      name: "{{ fs_namespace }}"
+    register: namespace_info
+
+  - name: Assert namespace exists
+    assert:
+      that: namespace_info.resources|length > 0
+      fail_msg: Namespace '{{ fs_namespace }}' does not exist
+
+  - name: Remove application Route (OpenShift)
+    k8s:
+      definition: "{{ lookup('template', 'route.yaml.j2') }}"
+      state: absent
+      wait: yes
+    when: okd_master_hostname is defined
+
+  - name: Remove application Ingress (Kubernetes)
+    k8s:
+      definition: "{{ lookup('template', 'ingress.yaml.j2') }}"
+      state: absent
+      wait: yes
+    when: okd_master_hostname is not defined
+
+# If it looks like we're deploying to OpenShift
+# we now need to logout...
+- include_tasks: logout.yaml
+  when: okd_master_hostname is defined
