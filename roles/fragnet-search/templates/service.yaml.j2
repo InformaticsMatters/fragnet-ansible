@@ -3,11 +3,11 @@ kind: Service
 apiVersion: v1
 metadata:
   name: fragnet-search
-  namespace: {{ fs_project }}
+  namespace: {{ fs_namespace }}
 spec:
   selector:
     name: fragnet-search
   ports:
   - name: http
-    port: 8080
+    port: 80
     targetPort: 8080

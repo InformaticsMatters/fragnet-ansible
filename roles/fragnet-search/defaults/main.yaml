@@ -1,20 +1,33 @@
 ---
 
-# Set to 'no' to undeploy Fragnet Search
-fs_deploy: yes
+# Set to 'absent' to undeploy Fragnet Search
+fs_state: present
 
 # Main application variables
-fs_project: fragnet-search
+fs_namespace: fragnet-search
 fs_sa: fragnet-search
+fs_sa_psp: im-unrestricted
 fs_image_tag: latest
-fs_route: fragnet-search
-fs_keycloak_client_id: fragnet-search
-fs_client_secret: "{{ lookup('env', 'FRAGNET_CLIENT_SECRET') }}"
+fs_hostname: "fragnet-search.informaticsmatters.org"
+fs_cert_issuer: staging
+fs_keycloak_client_id: fragnet-search-ad45df62es
+
+# The namespace and service name of the graph instance
+# We use this to construct the bolt service name
+# and use the namespace to collect the graph credentials
+# (which are stored in a secret in the namespace).
+#
+# For most deployments this does nto have to be set
+# as it is expected that the graph database in in the
+# 'graph' namespace with bolt service on 'graph.graph.svc'.
+graph_namepsace: graph
+graph_service: graph
 
 # Route and (ACME) Certificate creation
-fs_enable_route: no
+fs_enable_route: yes
 fs_enable_acme: no
 
+fs_node_purpose: application
 fs_pod_ready_timeout: 600
 
 # Provided by our chosen AWX/Tower OpenShift credentials

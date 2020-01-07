@@ -1,0 +1,23 @@
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  name: fragnet-search-ingress
+  namespace: {{ fs_namespace }}
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-nginx-{{ fs_cert_issuer|lower }}"
+spec:
+  tls:
+  - hosts:
+    - {{ fs_hostname }}
+    secretName: fragnet-search-tls
+  rules:
+  - host: {{ fs_hostname }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: fragnet-search
+          servicePort: http

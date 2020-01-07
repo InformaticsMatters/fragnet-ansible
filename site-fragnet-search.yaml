@@ -1,6 +1,6 @@
 ---
 
-- hosts: cli_node
+- hosts: server
   tasks:
   - include_role:
       name: fragnet-search

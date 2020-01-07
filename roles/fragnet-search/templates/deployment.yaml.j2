@@ -3,9 +3,10 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: fragnet-search
-  namespace: {{ fs_project }}
+  namespace: {{ fs_namespace }}
 spec:
-  replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       name: fragnet-search
@@ -15,19 +16,34 @@ spec:
         name: fragnet-search
     spec:
       serviceAccountName: {{ fs_sa }}
+
+      # A 'preferred' (not guaranteed)
+      # node selection affinity...
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: purpose
+                operator: In
+                values:
+                - {{ fs_node_purpose }}
+
       containers:
       - name: fragnet-search
         image: squonk/fragnet-services:{{ fs_image_tag }}
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
           name: http
         env:
         - name: NEO4J_SERVER
-          value: {{ graph_hostname }}
+          value: {{ graph_service }}.{{ graph_namespace }}.svc
         - name: NEO4J_USER
-          value: {{ graph_user }}
+          value: {{ graph_user_fact }}
         - name: NEO4J_PASSWORD
-          value: {{ graph_password }}
+          value: {{ graph_password_fact }}
         - name: LOG_ROOT
           value: /logs
         resources:
