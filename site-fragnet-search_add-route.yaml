@@ -2,7 +2,7 @@
 
 # Adds the application Route (if it does not exist)
 
-- hosts: server
+- hosts: localhost
   tasks:
   - include_role:
       name: fragnet-search
