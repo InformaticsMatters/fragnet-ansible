@@ -48,5 +48,5 @@ keycloak_realm: "{{ lookup('env', 'KEYCLOAK_REALM') }}"
 # For most deployments this does nto have to be set
 # as it is expected that the graph database in in the
 # 'graph' namespace with bolt service on 'graph.graph.svc'.
-graph_namepsace: graph
+graph_namespace: graph
 graph_service: graph
