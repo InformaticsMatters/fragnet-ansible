@@ -47,7 +47,7 @@
     url: "{{ fs_token }}"
     body:
       grant_type: password
-      client_id: fragnet-search
+      client_id: "{{ fragnet_keycloak_client_id }}"
       username: "{{ fragnet_username }}"
       password: "{{ fragnet_password }}"
     body_format: form-urlencoded
