@@ -20,14 +20,14 @@
 
 # Clean-up the infrastructure
 
-- name: Remove Keycloak Fragnet Search Client
-  local_action:
-    module: keycloak_client
-    auth_client_id: admin-cli
-    auth_keycloak_url: "{{ keycloak_server_url }}"
-    auth_realm: master
-    auth_username: "{{ keycloak_admin }}"
-    auth_password: "{{ keycloak_admin_password }}"
-    realm: "{{ keycloak_realm }}"
-    client_id: "{{ fs_keycloak_client_id }}"
-    state: absent
+#- name: Remove Keycloak Fragnet Search Client
+#  local_action:
+#    module: keycloak_client
+#    auth_client_id: admin-cli
+#    auth_keycloak_url: "{{ keycloak_server_url }}"
+#    auth_realm: master
+#    auth_username: "{{ keycloak_admin }}"
+#    auth_password: "{{ keycloak_admin_password }}"
+#    realm: "{{ keycloak_realm }}"
+#    client_id: "{{ fs_keycloak_client_id }}"
+#    state: absent

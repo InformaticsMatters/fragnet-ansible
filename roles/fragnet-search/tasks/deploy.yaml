@@ -19,24 +19,24 @@
 
   # Configure the Fragnet Search Keycloak Client
 
-  - name: Add Keycloak Fragnet Search Client
-    local_action:
-      module: keycloak_client
-      auth_client_id: admin-cli
-      auth_keycloak_url: "{{ keycloak_server_url }}"
-      auth_realm: master
-      auth_username: "{{ keycloak_admin }}"
-      auth_password: "{{ keycloak_admin_password }}"
-      realm: "{{ keycloak_realm }}"
-      client_id: "{{ fs_keycloak_client_id }}"
-      protocol: openid-connect
-      base_url: https://{{ fs_ingress_hostname }}
-      public_client: yes
-      service_accounts_enabled: yes
-      direct_access_grants_enabled: yes
-      standard_flow_enabled: yes
-      default_roles:
-      - fragnet-search
+#  - name: Add Keycloak Fragnet Search Client
+#    local_action:
+#      module: keycloak_client
+#      auth_client_id: admin-cli
+#      auth_keycloak_url: "{{ keycloak_server_url }}"
+#      auth_realm: master
+#      auth_username: "{{ keycloak_admin }}"
+#      auth_password: "{{ keycloak_admin_password }}"
+#      realm: "{{ keycloak_realm }}"
+#      client_id: "{{ fs_keycloak_client_id }}"
+#      protocol: openid-connect
+#      base_url: https://{{ fs_ingress_hostname }}
+#      public_client: yes
+#      service_accounts_enabled: yes
+#      direct_access_grants_enabled: yes
+#      standard_flow_enabled: yes
+#      default_roles:
+#      - fragnet-search
 
   # Extract secrets from the graph namespace
   # and then deploy the application
