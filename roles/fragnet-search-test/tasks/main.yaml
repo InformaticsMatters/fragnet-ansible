@@ -40,6 +40,7 @@
     msg: >
       fragnet_username={{ fragnet_username }}
       keycloak_server_url={{ keycloak_server_url }}
+      fragnet_keycloak_client_id={{ fragnet_keycloak_client_id }}
   when: fragnet_debug|bool
 
 - name: Get API token
