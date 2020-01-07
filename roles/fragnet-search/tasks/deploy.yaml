@@ -30,7 +30,7 @@
       realm: "{{ keycloak_realm }}"
       client_id: "{{ fs_keycloak_client_id }}"
       protocol: openid-connect
-      base_url: https://{{ fs_ingress_hostname }}
+      base_url: https://{{ fs_hostname }}
       public_client: yes
       service_accounts_enabled: yes
       direct_access_grants_enabled: yes
