@@ -20,7 +20,7 @@ data:
       "auth-server-url": "{{ keycloak_server_url }}",
       "ssl-required": "none",
       "disable-trust-manager": true,
-      "resource": "fragnet-search",
+      "resource": "{{ fs_keycloak_client_id }}",
       "principal-attribute": "preferred_username",
       "credentials": {
         "secret": "{{ keycloak_secret }}"
@@ -76,7 +76,7 @@ data:
         </session-config>
         <security-constraint>
             <web-resource-collection>
-                <web-resource-name>fragnet-search</web-resource-name>
+                <web-resource-name>{{ fs_keycloak_client_id }}</web-resource-name>
                 <url-pattern>/*</url-pattern>
                 <http-method-omission>OPTIONS</http-method-omission>
             </web-resource-collection>
