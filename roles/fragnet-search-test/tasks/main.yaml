@@ -22,6 +22,7 @@
 - name: Ping the search engine
   uri:
     url: "{{ fs_ping }}"
+    validate_certs: "{{ fragnet_validate_certs|bool }}"
 
 # For more complex tests we'll need an API token.
 #
@@ -82,6 +83,7 @@
     headers:
       Authorization: bearer {{ fragnet_token }}
     timeout: "{{ fragnet_query_timeout_s|int }}"
+    validate_certs: "{{ fragnet_validate_certs|bool }}"
   register: suppliers_result
 
 - name: Collect result's suppliers (sorted)

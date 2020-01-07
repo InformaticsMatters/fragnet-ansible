@@ -7,6 +7,9 @@ fragnet_deployed_graph_id: SetMe
 # Fragnet API version
 fragnet_api: v2
 
+# Validate the search URL certificate?
+fragnet_validate_certs: no
+
 # Credentials (usually injected by AWX/Ansible Tower) -------------------------
 
 # Fragnet (user) credentials.

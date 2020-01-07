@@ -79,6 +79,7 @@
     headers:
       Authorization: bearer {{ fragnet_token }}
     timeout: "{{ fragnet_query_timeout_s|int }}"
+    validate_certs: "{{ fragnet_validate_certs|bool }}"
   register: availability_result
 
 # Collects the codes and SMILES strings returned
