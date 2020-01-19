@@ -105,8 +105,8 @@
   set_fact:
     available: "{{ available|default([]) + [av_values.0 + '/' + av_values.1] }}"
   with_together:
-    - "{{ available_codes }}"
-    - "{{ available_smiles }}"
+  - "{{ available_codes }}"
+  - "{{ available_smiles }}"
   loop_control:
     loop_var: av_values
 

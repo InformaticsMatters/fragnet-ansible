@@ -39,7 +39,7 @@ spec:
           name: http
         env:
         - name: NEO4J_SERVER
-          value: {{ graph_service }}.{{ graph_namespace }}.svc
+          value: '{{ graph_service }}.{{ graph_namespace }}.svc'
         - name: NEO4J_USER
           value: {{ graph_user_fact }}
         - name: NEO4J_PASSWORD

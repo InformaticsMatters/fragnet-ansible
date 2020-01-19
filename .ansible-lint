@@ -1,0 +1,6 @@
+---
+
+# Lint Ansible but exclude some forms of error: -
+# 204 : Lines should be no longer than 160 chars
+skip_list:
+- '204'
