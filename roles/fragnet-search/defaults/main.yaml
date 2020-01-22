@@ -6,7 +6,7 @@ fs_state: present
 # Main application variables
 fs_namespace: fragnet-search
 fs_sa: fragnet-search
-fs_sa_psp: im-unrestricted
+fs_sa_psp: im-core-unrestricted
 fs_image_name: fragnet-all
 fs_image_tag: latest
 fs_hostname: fragnet-search.informaticsmatters.org
