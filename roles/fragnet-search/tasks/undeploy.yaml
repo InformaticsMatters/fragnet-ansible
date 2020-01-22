@@ -21,8 +21,7 @@
 # Clean-up the infrastructure
 
 - name: Remove Keycloak Fragnet Search Client
-  local_action:
-    module: keycloak_client
+  keycloak_client:
     auth_client_id: admin-cli
     auth_keycloak_url: "{{ keycloak_server_url }}"
     auth_realm: master
@@ -31,3 +30,4 @@
     realm: "{{ keycloak_realm }}"
     client_id: "{{ fs_keycloak_client_id }}"
     state: absent
+  delegate_to: localhost

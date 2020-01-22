@@ -5,7 +5,7 @@
 - name: Assert Fragnet variables
   fail:
     msg: You must define a FRAGNET_USERNAME and FRAGNET_PASSWORD
-  when: fragnet_username == '' or fragnet_password == ''
+  when: not fragnet_username or not fragnet_password
 
 # First of all ... a basic test to check the engine's alive
 # by calling the REST 'ping' endpoint
