@@ -5,18 +5,11 @@
 # To un-deploy Fragnet Search, the fastest way is to
 # simply delete the namespace.
 
-- block:
-
-  - name: Delete namespace
-    k8s:
-      state: absent
-      definition: "{{ lookup('template', 'namespace.yaml.j2') }}"
-      wait: yes
-
-  module_defaults:
-    group/k8s:
-      host: "{{ k8s_auth_host }}"
-      api_key: "{{ k8s_auth_api_key }}"
+- name: Delete namespace
+  k8s:
+    state: absent
+    definition: "{{ lookup('template', 'namespace.yaml.j2') }}"
+    wait: yes
 
 # Clean-up the infrastructure
 

@@ -1,100 +1,93 @@
 ---
 
-- block:
+# Create the namespace and other basic materials
+#
+# For the deployment to work
+# the anticipated infrastructure-deployed PSP is used.
 
-  # Create the namespace and other basic materials
-  #
-  # For the deployment to work
-  # the anticipated infrastructure-deployed PSP is used.
+- name: Create namespace
+  k8s:
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    wait: yes
+  loop:
+  - namespace
+  - serviceaccount
+  - role
+  - rolebinding
 
-  - name: Create namespace
-    k8s:
-      definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
-      wait: yes
-    loop:
-    - namespace
-    - serviceaccount
-    - role
-    - rolebinding
+# Configure the Fragnet Search Keycloak Client
 
-  # Configure the Fragnet Search Keycloak Client
+- name: Add Keycloak Fragnet Search Client
+  keycloak_client:
+    auth_client_id: admin-cli
+    auth_keycloak_url: "{{ keycloak_server_url }}"
+    auth_realm: master
+    auth_username: "{{ keycloak_admin }}"
+    auth_password: "{{ keycloak_admin_password }}"
+    realm: "{{ keycloak_realm }}"
+    client_id: "{{ fs_keycloak_client_id }}"
+    protocol: openid-connect
+    base_url: https://{{ fs_hostname }}
+    public_client: yes
+    service_accounts_enabled: yes
+    direct_access_grants_enabled: yes
+    standard_flow_enabled: yes
+    default_roles:
+    - fragnet-search
+  delegate_to: localhost
 
-  - name: Add Keycloak Fragnet Search Client
-    keycloak_client:
-      auth_client_id: admin-cli
-      auth_keycloak_url: "{{ keycloak_server_url }}"
-      auth_realm: master
-      auth_username: "{{ keycloak_admin }}"
-      auth_password: "{{ keycloak_admin_password }}"
-      realm: "{{ keycloak_realm }}"
-      client_id: "{{ fs_keycloak_client_id }}"
-      protocol: openid-connect
-      base_url: https://{{ fs_hostname }}
-      public_client: yes
-      service_accounts_enabled: yes
-      direct_access_grants_enabled: yes
-      standard_flow_enabled: yes
-      default_roles:
-      - fragnet-search
-    delegate_to: localhost
+# Extract secrets from the graph namespace
+# and then deploy the application
 
-  # Extract secrets from the graph namespace
-  # and then deploy the application
+- name: Get graph secrets (from namespace '{{ graph_namespace }}')
+  k8s_facts:
+    kind: Secret
+    api_version: v1
+    name: graph-secrets
+    namespace: "{{ graph_namespace }}"
+  register: graph_s_result
 
-  - name: Get graph secrets (from namespace '{{ graph_namespace }}')
-    k8s_facts:
-      kind: Secret
-      api_version: v1
-      name: graph-secrets
-      namespace: "{{ graph_namespace }}"
-    register: graph_s_result
+- name: Check graph secrets
+  assert:
+    that: graph_s_result.resources|length == 1
 
-  - name: Check graph secrets
-    assert:
-      that: graph_s_result.resources|length == 1
+- name: Set neo4j_auth fact from secrets
+  set_fact:
+    graph_neo4j_auth_fact: "{{ graph_s_result.resources[0].data.neo4j_auth|b64decode }}"
 
-  - name: Set neo4j_auth fact from secrets
-    set_fact:
-      graph_neo4j_auth_fact: "{{ graph_s_result.resources[0].data.neo4j_auth|b64decode }}"
+- name: Get neo4j credential facts from neo4j_auth fact
+  set_fact:
+    graph_user_fact: "{{ graph_neo4j_auth_fact.split('/')[0] }}"
+    graph_password_fact: "{{ graph_neo4j_auth_fact.split('/')[1] }}"
 
-  - name: Get neo4j credential facts from neo4j_auth fact
-    set_fact:
-      graph_user_fact: "{{ graph_neo4j_auth_fact.split('/')[0] }}"
-      graph_password_fact: "{{ graph_neo4j_auth_fact.split('/')[1] }}"
+- name: Check graph credentials
+  assert:
+    that:
+    - graph_user_fact|length > 0
+    - graph_password_fact|length > 0
 
-  - name: Check graph credentials
-    assert:
-      that:
-      - graph_user_fact|length > 0
-      - graph_password_fact|length > 0
+- name: Deploy Fragnet Search objects
+  k8s:
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    wait: yes
+    wait_timeout: "{{ fs_pod_ready_timeout }}"
+  loop:
+  - configmap
+  - deployment
+  - service
 
-  - name: Deploy Fragnet Search objects
-    k8s:
-      definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
-      wait: yes
-      wait_timeout: "{{ fs_pod_ready_timeout }}"
-    loop:
-    - configmap
-    - deployment
-    - service
+- name: Deploy Fragnet Search Route (OpenShift)
+  k8s:
+    definition: "{{ lookup('template', 'route.yaml.j2') }}"
+    wait: yes
+  when:
+  - okd_master_hostname is defined
+  - fs_enable_route|bool
 
-  - name: Deploy Fragnet Search Route (OpenShift)
-    k8s:
-      definition: "{{ lookup('template', 'route.yaml.j2') }}"
-      wait: yes
-    when:
-    - okd_master_hostname is defined
-    - fs_enable_route|bool
-
-  - name: Deploy Fragnet Search Ingress (Kubernetes)
-    k8s:
-      definition: "{{ lookup('template', 'ingress.yaml.j2') }}"
-      wait: yes
-    when:
-    - okd_master_hostname is not defined
-    - fs_enable_route|bool
-
-  module_defaults:
-    group/k8s:
-      host: "{{ k8s_auth_host }}"
-      api_key: "{{ k8s_auth_api_key }}"
+- name: Deploy Fragnet Search Ingress (Kubernetes)
+  k8s:
+    definition: "{{ lookup('template', 'ingress.yaml.j2') }}"
+    wait: yes
+  when:
+  - okd_master_hostname is not defined
+  - fs_enable_route|bool
