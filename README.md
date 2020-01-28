@@ -1,7 +1,7 @@
-# fragnet-ansible
+# Fragnet (Ansible)
 
 [![Build Status](https://travis-ci.com/InformaticsMatters/fragnet-ansible.svg?branch=master)](https://travis-ci.com/InformaticsMatters/fragnet-ansible)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/informaticsmatters/fragnet-ansible)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/informaticsmatters/fragnet-ansible)
 
 Ansible Roles (and playbooks) for the fragnet project
 suitable for execution by [AWX].
