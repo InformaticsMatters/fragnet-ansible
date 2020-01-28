@@ -53,6 +53,11 @@
       wait: yes
     when: okd_master_hostname is not defined
 
+  module_defaults:
+    group/k8s:
+      host: "{{ k8s_auth_host }}"
+      api_key: "{{ k8s_auth_api_key }}"
+
 # If it looks like we're deploying to OpenShift
 # we now need to logout...
 - include_tasks: logout.yaml
