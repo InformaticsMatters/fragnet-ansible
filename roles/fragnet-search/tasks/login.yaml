@@ -6,7 +6,7 @@
 
 - name: Log in to OpenShift (obtain access token)
   k8s_auth:
-    host: "{{ okd_master_hostname }}"
+    host: https://{{ okd_master_hostname }}
     username: "{{ okd_admin }}"
     password: "{{ okd_admin_password }}"
   register: k8s_auth_results
