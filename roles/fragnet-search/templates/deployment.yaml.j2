@@ -33,7 +33,7 @@ spec:
       containers:
       - name: fragnet-search
         image: squonk/{{ fs_image_name }}:{{ fs_image_tag }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ fs_image_pull_policy }}
         ports:
         - containerPort: 8080
           name: http
