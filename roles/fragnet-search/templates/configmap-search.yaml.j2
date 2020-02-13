@@ -2,7 +2,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: fs-config-map
+  name: fs-config-map-search
   namespace: {{ fs_namespace }}
 data:
 
@@ -141,8 +141,3 @@ data:
         </Engine>
       </Service>
     </Server>
-
-  config.json: |
-    {
-      "FRAGNET_SERVER": "https://{{ fs_hostname }}"
-    }

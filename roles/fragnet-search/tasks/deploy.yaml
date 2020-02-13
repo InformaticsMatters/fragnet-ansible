@@ -72,7 +72,8 @@
     wait: yes
     wait_timeout: "{{ fs_pod_ready_timeout }}"
   loop:
-  - configmap
+  - configmap-search
+  - configmap-ui
   - deployment
   - service
 
