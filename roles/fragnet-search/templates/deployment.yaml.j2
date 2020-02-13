@@ -72,6 +72,9 @@ spec:
         - mountPath: /usr/local/tomcat/conf/server.xml
           name: fs-config-map
           subPath: server.xml
+        - mountPath: /usr/local/tomcat/webapps/ROOT/config.json
+          name: fs-config-map
+          subPath: config.json
       volumes:
       - name: fs-config-map
         configMap:
