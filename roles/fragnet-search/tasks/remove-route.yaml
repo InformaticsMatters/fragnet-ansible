@@ -29,7 +29,7 @@
 - block:
 
   - name: Get expected namespace
-    k8s_facts:
+    k8s_info:
       kind: Namespace
       name: "{{ fs_namespace }}"
     register: namespace_info

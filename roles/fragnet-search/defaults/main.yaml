@@ -4,11 +4,7 @@
 fs_state: present
 
 # Main application variables
-fs_namespace: fragnet-search
-fs_sa: fragnet-search
-fs_sa_psp: im-core-unrestricted
-fs_image_name: fragnet-all
-fs_image_tag: latest
+fs_image_tag: 1.0.0
 fs_image_pull_policy: IfNotPresent
 fs_hostname: fragnet.informaticsmatters.org
 fs_cert_issuer: staging
@@ -17,9 +13,6 @@ fs_keycloak_client_id: fragnet-search-im-main
 # Route and (ACME) Certificate creation
 fs_enable_route: yes
 fs_enable_acme: no
-
-fs_node_purpose: application
-fs_pod_ready_timeout: 600
 
 # Provided by our chosen AWX/Tower Keycloak credentials
 # (keycloak credential type)...
