@@ -13,7 +13,12 @@
   - namespace
   - serviceaccount
   - role
-  - rolebinding
+  - rolebinding-fs-sa
+
+- name: Relax {{ fs_namespace }} 'default' service account (for cert-manager)
+  k8s:
+    definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
+    wait: yes
 
 # Configure the Fragnet Search Keycloak Client
 
