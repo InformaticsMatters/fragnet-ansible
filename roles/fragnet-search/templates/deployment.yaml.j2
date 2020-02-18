@@ -32,7 +32,7 @@ spec:
 
       containers:
       - name: fragnet-search
-        image: squonk/{{ fs_image_name }}:{{ fs_image_tag }}
+        image: {{ fs_image_registry }}/{{ fs_image_repository }}/{{ fs_image_name }}:{{ fs_image_tag }}
         imagePullPolicy: {{ fs_image_pull_policy }}
         ports:
         - containerPort: 8080
@@ -85,3 +85,5 @@ spec:
       - name: fs-config-map-ui
         configMap:
           name: fs-config-map-ui
+      imagePullSecrets:
+      - name: ui-pull-secret
