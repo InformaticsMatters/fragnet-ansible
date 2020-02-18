@@ -10,9 +10,9 @@ fs_sa_psp: im-core-unrestricted
 fs_image_name: fragnet-all
 fs_image_tag: latest
 fs_image_pull_policy: IfNotPresent
-fs_hostname: fragnet-search.informaticsmatters.org
+fs_hostname: fragnet.informaticsmatters.org
 fs_cert_issuer: staging
-fs_keycloak_client_id: fragnet-search-ad45df62es
+fs_keycloak_client_id: fragnet-search-im-main
 
 # Route and (ACME) Certificate creation
 fs_enable_route: yes
