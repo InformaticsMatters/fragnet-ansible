@@ -13,7 +13,12 @@
   - namespace
   - serviceaccount
   - role
-  - rolebinding
+  - rolebinding-fs-sa
+
+- name: Relax {{ fs_namespace }} 'default' service account (for cert-manager)
+  k8s:
+    definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
+    wait: yes
 
 # Configure the Fragnet Search Keycloak Client
 
@@ -28,6 +33,10 @@
     client_id: "{{ fs_keycloak_client_id }}"
     protocol: openid-connect
     base_url: https://{{ fs_hostname }}
+    web_origins:
+    - https://{{ fs_hostname }}
+    redirect_uris:
+    - https://{{ fs_hostname }}/*
     public_client: yes
     service_accounts_enabled: yes
     direct_access_grants_enabled: yes
@@ -72,7 +81,8 @@
     wait: yes
     wait_timeout: "{{ fs_pod_ready_timeout }}"
   loop:
-  - configmap
+  - configmap-search
+  - configmap-ui
   - deployment
   - service
 

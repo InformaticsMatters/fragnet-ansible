@@ -1,0 +1,22 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: fs-config-map-ui
+  namespace: {{ fs_namespace }}
+data:
+
+  config.json: |
+    {
+      "FRAGNET_SERVER": "https://{{ fs_hostname }}"
+    }
+
+  keycloak.json: |
+    {
+      "realm": "{{ keycloak_realm }}",
+      "auth-server-url": "{{ keycloak_server_url }}/",
+      "ssl-required": "external",
+      "resource": "{{ fs_keycloak_client_id }}",
+      "public-client": true,
+      "confidential-port": 0
+    }

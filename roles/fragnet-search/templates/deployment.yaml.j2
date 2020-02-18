@@ -33,7 +33,7 @@ spec:
       containers:
       - name: fragnet-search
         image: squonk/{{ fs_image_name }}:{{ fs_image_tag }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ fs_image_pull_policy }}
         ports:
         - containerPort: 8080
           name: http
@@ -55,24 +55,33 @@ spec:
             memory: 4Gi
         volumeMounts:
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/META-INF/context.xml
-          name: fs-config-map
+          name: fs-config-map-search
           subPath: context.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/keycloak.json
-          name: fs-config-map
+          name: fs-config-map-search
           subPath: keycloak.json
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/logging.properties
-          name: fs-config-map
+          name: fs-config-map-search
           subPath: logging.properties
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/web.xml
-          name: fs-config-map
+          name: fs-config-map-search
           subPath: web.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/server.xml
-          name: fs-config-map
+          name: fs-config-map-search
           subPath: server.xml
+        - mountPath: /usr/local/tomcat/webapps/ROOT/config.json
+          name: fs-config-map-ui
+          subPath: config.json
+        - mountPath: /usr/local/tomcat/webapps/ROOT/keycloak.json
+          name: fs-config-map-ui
+          subPath: keycloak.json
       volumes:
-      - name: fs-config-map
+      - name: fs-config-map-search
         configMap:
-          name: fs-config-map
+          name: fs-config-map-search
+      - name: fs-config-map-ui
+        configMap:
+          name: fs-config-map-ui
