@@ -4,7 +4,7 @@
 fs_state: present
 
 # Main application variables
-fs_image_tag: 1.0.0-rc.2
+fs_image_tag: 1.0.0
 fs_image_pull_policy: IfNotPresent
 fs_hostname: fragnet.informaticsmatters.org
 fs_cert_issuer: staging
