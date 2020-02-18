@@ -28,6 +28,10 @@
     client_id: "{{ fs_keycloak_client_id }}"
     protocol: openid-connect
     base_url: https://{{ fs_hostname }}
+    web_origins:
+    - https://{{ fs_hostname }}
+    redirect_uris:
+    - https://{{ fs_hostname }}/*
     public_client: yes
     service_accounts_enabled: yes
     direct_access_grants_enabled: yes
