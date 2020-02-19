@@ -23,11 +23,6 @@
   uri:
     url: "{{ fs_ping }}"
     validate_certs: "{{ fragnet_validate_certs|bool }}"
-  register: ping_result
-
-- name: Print ping result
-  debug:
-    var: ping_result
 
 # For more complex tests we'll need an API token.
 #

@@ -30,9 +30,7 @@ availability_tests:
       smiles: CCC1CN(CCCCCCCN)C1
 - molecule: CC1CCCCC1C(N)C1CCCC1(C)C
   results:
-  - supplier: MolPort
+  - supplier: ChemSpace-BB
     results:
-    - code: MOLPORT:006-115-550
-      smiles: Cl.CN1CCOCC1
-    - code: MOLPORT:000-882-332
-      smiles: CN1CCOCC1
+    - code: CHEMSPACE-BB:CSC023679957
+      smiles: CC1CCCCC1C(N)C1CCCC1(C)C
