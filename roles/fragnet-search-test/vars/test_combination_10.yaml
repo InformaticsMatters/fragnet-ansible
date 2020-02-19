@@ -34,7 +34,7 @@ availability_tests:
     results:
     - code: CHEMSPACE-BB:CSC023679957
       smiles: CC1CCCCC1C(N)C1CCCC1(C)C
-- molecule: O=C1NCCC11CCOCC1
+- molecule: C1CSSCCN1
   results:
   - supplier: ChemSpace-BB
     results:
