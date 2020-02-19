@@ -13,7 +13,6 @@
 fragnet_expected_suppliers:
 - ChemSpace-BB
 - MolPort
-- ToxCast
 
 # Availability tests.
 #
@@ -44,8 +43,4 @@ availability_tests:
     - code: MOLPORT:006-115-550
       smiles: Cl.CN1CCOCC1
     - code: MOLPORT:000-882-332
-      smiles: CN1CCOCC1
-  - supplier: ToxCast
-    results:
-    - code: TOXCAST:DTXSID9029146
       smiles: CN1CCOCC1

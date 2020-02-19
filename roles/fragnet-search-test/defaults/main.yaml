@@ -6,7 +6,7 @@ fragnet_deployed_graph_id: SetMe
 
 # Fragnet API version and Keycloak Client ID
 fragnet_api: v2
-fragnet_keycloak_client_id: fragnet-search-ad45df62es
+fragnet_keycloak_client_id: fragnet-search-im-main
 
 # Validate the search URL certificate?
 fragnet_validate_certs: no
