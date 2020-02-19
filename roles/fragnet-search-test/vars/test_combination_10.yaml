@@ -22,7 +22,7 @@ fragnet_expected_suppliers:
 # set of results does not match the database you've deployed you must provide
 # your own.
 availability_tests:
-- molecule: NC1CCCNC1
+- molecule: CCC1CN(CCCCCCCN)C1
   results:
   - supplier: MolPort
     results:
@@ -36,7 +36,7 @@ availability_tests:
     results:
     - code: CHEMSPACE-BB:CSC011830386
       smiles: N[C@H]1CCCNC1
-- molecule: CN1CCOCC1
+- molecule: CC1CCCCC1C(N)C1CCCC1(C)C
   results:
   - supplier: MolPort
     results:
