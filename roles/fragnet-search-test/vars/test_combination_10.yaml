@@ -24,18 +24,10 @@ fragnet_expected_suppliers:
 availability_tests:
 - molecule: CCC1CN(CCCCCCCN)C1
   results:
-  - supplier: MolPort
-    results:
-    - code: MOLPORT:000-000-371
-      smiles: Cl.Cl.N[C@H]1CCCNC1
-    - code: MOLPORT:000-861-523
-      smiles: N[C@@H]1CCCNC1
-    - code: MOLPORT:000-000-370
-      smiles: Cl.Cl.N[C@@H]1CCCNC1
   - supplier: ChemSpace-BB
     results:
-    - code: CHEMSPACE-BB:CSC011830386
-      smiles: N[C@H]1CCCNC1
+    - code: CHEMSPACE-BB:CSC024004194
+      smiles: CCC1CN(CCCCCCCN)C1
 - molecule: CC1CCCCC1C(N)C1CCCC1(C)C
   results:
   - supplier: MolPort
