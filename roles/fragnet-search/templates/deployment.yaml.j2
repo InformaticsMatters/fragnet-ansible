@@ -33,7 +33,11 @@ spec:
       containers:
       - name: fragnet-search
         image: {{ fs_image_registry }}/{{ fs_image_repository }}/{{ fs_image_name }}:{{ fs_image_tag }}
-        imagePullPolicy: {{ fs_image_pull_policy }}
+{% if fs_image_tag == 'latest' %}
+        imagePullPolicy: Always
+{% else %}
+        imagePullPolicy: IfNotPresent
+{% endif %}
         ports:
         - containerPort: 8080
           name: http

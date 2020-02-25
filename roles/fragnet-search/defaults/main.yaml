@@ -5,9 +5,8 @@ fs_state: present
 
 # Main application variables
 fs_image_tag: 1.0.0
-fs_image_pull_policy: IfNotPresent
-fs_hostname: fragnet.informaticsmatters.org
-fs_cert_issuer: staging
+fs_hostname: fragnet.informaticsmatters.com
+fs_cert_issuer: production
 fs_keycloak_client_id: fragnet-search-im-main
 
 # Route and (ACME) Certificate creation
