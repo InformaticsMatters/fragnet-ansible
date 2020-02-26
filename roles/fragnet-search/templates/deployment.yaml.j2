@@ -33,7 +33,7 @@ spec:
       containers:
       - name: fragnet-search
         image: {{ fs_image_registry }}/{{ fs_image_repository }}/{{ fs_image_name }}:{{ fs_image_tag }}
-{% if fs_image_tag == 'latest' %}
+{% if fs_image_tag in ['latest', 'stable'] %}
         imagePullPolicy: Always
 {% else %}
         imagePullPolicy: IfNotPresent
