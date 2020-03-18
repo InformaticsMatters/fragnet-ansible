@@ -28,7 +28,7 @@ keycloak_realm: "{{ lookup('env', 'KEYCLOAK_REALM') }}"
 # and use the namespace to collect the graph credentials
 # (which are stored in a secret in the namespace).
 #
-# For most deployments this does nto have to be set
+# For most deployments this does not have to be set
 # as it is expected that the graph database in in the
 # 'graph' namespace with bolt service on 'graph.graph.svc'.
 graph_namespace: graph
