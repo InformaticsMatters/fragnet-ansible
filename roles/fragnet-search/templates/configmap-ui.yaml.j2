@@ -13,7 +13,7 @@ data:
 
   keycloak.json: |
     {
-      "realm": "{{ keycloak_realm }}",
+      "realm": "{{ fs_realm }}",
       "auth-server-url": "{{ keycloak_server_url }}/",
       "ssl-required": "external",
       "resource": "{{ fs_keycloak_client_id }}",

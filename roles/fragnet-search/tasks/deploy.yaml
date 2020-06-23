@@ -31,6 +31,9 @@
 # register the Fragnet Search Client.
 
 - import_tasks: get-keycloak-realm-manager-credentials.yaml
+  vars:
+    realm_name: "{{ fs_realm }}"
+    reaml_namespace: "{{ ir_namespace }}"
 
 - name: Add realm roles
   include_role:

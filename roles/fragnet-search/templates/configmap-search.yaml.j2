@@ -14,7 +14,7 @@ data:
 
   keycloak.json: |
     {
-      "realm": "{{ keycloak_realm }}",
+      "realm": "{{ fs_realm }}",
       "realm-public-key": "{{ keycloak_public_key }}",
       "bearer-only": false,
       "auth-server-url": "{{ keycloak_server_url }}",
@@ -100,7 +100,7 @@ data:
         </security-constraint>
         <login-config>
             <auth-method>KEYCLOAK</auth-method>
-            <realm-name>{{ keycloak_realm }}</realm-name>
+            <realm-name>{{ fs_realm }}</realm-name>
         </login-config>
         <security-role>
             <role-name>fragnet-search</role-name>
