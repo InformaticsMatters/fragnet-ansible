@@ -24,16 +24,35 @@
     definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
     wait: yes
 
-# Configure the Fragnet Search Keycloak Client
+# Configure the Fragnet Search Keycloak Client.
+#
+# The user is assumed to have created a realm
+# and we simply need to add a Role to that realm and then
+# register the Fragnet Search Client.
+
+- import_tasks: get-keycloak-realm-manager-credentials.yaml
+
+- name: Add realm roles
+  include_role:
+    name: informaticsmatters.infrastructure_user
+  vars:
+    iu_action: create
+    iu_type: role
+    iu_hostname: "{{ keycloak_server_url|urlsplit('hostname') }}"
+    iu_realm: "{{ fs_realm }}"
+    iu_realm_manager: "{{ keycloak_realm_manager_fact }}"
+    iu_realm_manager_password: "{{ keycloak_realm_manager_password_fact }}"
+    iu_roles:
+    - name: fragnet-search
 
 - name: Add Keycloak Fragnet Search Client
   keycloak_client:
     auth_client_id: admin-cli
     auth_keycloak_url: "{{ keycloak_server_url }}"
-    auth_realm: master
-    auth_username: "{{ keycloak_admin }}"
-    auth_password: "{{ keycloak_admin_password }}"
-    realm: "{{ keycloak_realm }}"
+    auth_realm: "{{ fs_realm }}"
+    auth_username: "{{ keycloak_realm_manager_fact }}"
+    auth_password: "{{ keycloak_realm_manager_password_fact }}"
+    realm: "{{ fs_realm }}"
     client_id: "{{ fs_keycloak_client_id }}"
     protocol: openid-connect
     base_url: https://{{ fs_hostname }}

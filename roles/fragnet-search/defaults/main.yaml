@@ -7,11 +7,16 @@ fs_state: present
 fs_image_tag: 1.3.2
 fs_hostname: fragnet.informaticsmatters.com
 fs_cert_issuer: production
+fs_realm: squonk
 fs_keycloak_client_id: fragnet-search
 
 # Route and (ACME) Certificate creation
 fs_enable_route: yes
 fs_enable_acme: no
+
+# The namespace the infrastructure is deployed to.
+# This will be where we can find Keycloak.
+ir_namespace: im-infra
 
 # Provided by our chosen AWX/Tower Keycloak credentials
 # (keycloak credential type)...
