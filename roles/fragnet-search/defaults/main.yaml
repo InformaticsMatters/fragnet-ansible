@@ -3,11 +3,22 @@
 # Set to 'absent' to undeploy Fragnet Search
 fs_state: present
 
-# Main application variables
+# The search flavour to deploy - this is either
+# 'search' for the core Search container, or
+# 'ui' for the Fragnet Search UI.
+fs_flavour: search
+# The flavour version.
+# This should be a valid version for the selected flavour, i.e. a version
+# for the search image or one that is valid for the ui image.
 fs_image_tag: 1.3.2
+
+# Realm
+fs_realm: squonk
+fs_realm_public_key: SetMe
+
+# Main application variables
 fs_hostname: fragnet.informaticsmatters.com
 fs_cert_issuer: production
-fs_realm: squonk
 fs_keycloak_client_id: fragnet-search
 
 # Route and (ACME) Certificate creation

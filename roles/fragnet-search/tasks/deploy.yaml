@@ -1,5 +1,11 @@
 ---
 
+- name: Pre-flight checks
+  assert:
+    that:
+    - fs_realm_public_key != 'SetMe'
+    - fs_realm_public_key|string|length > 0
+
 - name: Include pull secrets
   include_vars:
     file: pull-secrets.vault
