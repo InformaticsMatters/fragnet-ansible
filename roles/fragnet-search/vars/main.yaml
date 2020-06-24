@@ -1,7 +1,7 @@
 ---
 
 # Details of the Search image
-fs_flour_search_image: docker.io/informaticsmatters/fragnet-search
+fs_flour_search_image: docker.io/squonk/fragnet-search
 # Details of the UI image (which needs an image pull-secret)
 fs_flavour_ui_image: registry.gitlab.com/informaticsmatters/fragnet-ui
 
