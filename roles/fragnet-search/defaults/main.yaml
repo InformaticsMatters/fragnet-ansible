@@ -10,7 +10,7 @@ fs_flavour: search
 # The flavour version.
 # This should be a valid version for the selected flavour, i.e. a version
 # for the search image or one that is valid for the ui image.
-fs_image_tag: 1.3.2
+fs_image_tag: 0.3.2
 
 # Realm
 fs_realm: squonk
