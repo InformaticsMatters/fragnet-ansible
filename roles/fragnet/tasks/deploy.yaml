@@ -3,8 +3,6 @@
 - name: Pre-flight checks
   assert:
     that:
-    - fs_realm_public_key != 'SetMe'
-    - fs_realm_public_key|string|length > 0
     - fs_flavour|string in ['services', 'ui']
 
 # Create the namespace and other basic materials
