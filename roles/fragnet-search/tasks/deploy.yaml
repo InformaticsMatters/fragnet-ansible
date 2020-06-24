@@ -5,7 +5,7 @@
     that:
     - fs_realm_public_key != 'SetMe'
     - fs_realm_public_key|string|length > 0
-    - fs_flavour|string in ['search', 'ui']
+    - fs_flavour|string in ['services', 'ui']
 
 # Create the namespace and other basic materials
 #
@@ -106,8 +106,8 @@
 
 # Deploy the Search or UI?
 
-- include_tasks: deploy-search.yaml
-  when: fs_flavour == 'search'
+- include_tasks: deploy-services.yaml
+  when: fs_flavour == 'services'
 
 - include_tasks: deploy-ui.yaml
   when: fs_flavour == 'ui'

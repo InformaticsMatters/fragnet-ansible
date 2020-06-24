@@ -2,7 +2,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: fragnet-search
+  name: fragnet-services
   namespace: {{ fs_namespace }}
 spec:
   strategy:
@@ -31,8 +31,8 @@ spec:
                 - {{ fs_node_purpose }}
 
       containers:
-      - name: fragnet-search
-        image: {{ fs_flour_search_image }}:{{ fs_image_tag }}
+      - name: fragnet-services
+        image: {{ fs_flour_services_image }}:{{ fs_image_tag }}
 {% if fs_image_tag in ['latest', 'stable'] %}
         imagePullPolicy: Always
 {% else %}
@@ -60,24 +60,24 @@ spec:
             memory: 4Gi
         volumeMounts:
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/META-INF/context.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: context.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/keycloak.json
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: keycloak.json
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/logging.properties
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: logging.properties
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/web.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: web.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/server.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: server.xml
       volumes:
-      - name: fs-config-map-search
+      - name: fs-config-map-services
         configMap:
-          name: fs-config-map-search
+          name: fs-config-map-services

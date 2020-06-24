@@ -60,22 +60,22 @@ spec:
             memory: 4Gi
         volumeMounts:
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/META-INF/context.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: context.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/keycloak.json
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: keycloak.json
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/logging.properties
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: logging.properties
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/web.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: web.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/server.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: server.xml
         - mountPath: /usr/local/tomcat/webapps/ROOT/config.json
           name: fs-config-map-ui
@@ -84,9 +84,9 @@ spec:
           name: fs-config-map-ui
           subPath: keycloak.json
       volumes:
-      - name: fs-config-map-search
+      - name: fs-config-map-services
         configMap:
-          name: fs-config-map-search
+          name: fs-config-map-services
       - name: fs-config-map-ui
         configMap:
           name: fs-config-map-ui

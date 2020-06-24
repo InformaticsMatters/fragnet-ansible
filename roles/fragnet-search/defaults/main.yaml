@@ -3,14 +3,14 @@
 # Set to 'absent' to undeploy Fragnet Search
 fs_state: present
 
-# The search flavour to deploy - this is either
-# 'search' for the core Search container, or
+# The fragnet flavour to deploy - this is either
+# 'services' for the core Search container, or
 # 'ui' for the Fragnet Search UI.
-fs_flavour: search
+fs_flavour: services
 # The flavour version.
 # This should be a valid version for the selected flavour, i.e. a version
-# for the search image or one that is valid for the ui image.
-fs_image_tag: 0.3.2
+# for the services image or one that is valid for the ui image.
+fs_image_tag: 0.5.6
 
 # Realm
 fs_realm: squonk

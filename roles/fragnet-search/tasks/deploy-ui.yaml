@@ -23,6 +23,6 @@
     wait: yes
     wait_timeout: "{{ fs_pod_ready_timeout }}"
   loop:
-  - configmap-search
+  - configmap-services
   - configmap-ui
   - deployment-ui
