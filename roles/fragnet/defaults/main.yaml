@@ -17,7 +17,12 @@ fs_namespace: fragnet-search
 
 # Realm
 fs_realm: squonk
-fs_realm_public_key: SetMe
+# Adjust the realm? i.e. create the client ID and roles?
+# But default 'no'. Set to 'yes' if you need to create the
+# client ID and the application roles. This is also taken
+# into account when the app is removed. If fs_adjust_realm is 'yes'
+# when you undeploy, the client and roles are removed.
+fs_adjust_realm: no
 
 # Main application variables
 fs_hostname: fragnet.informaticsmatters.com

@@ -15,7 +15,7 @@ data:
   keycloak.json: |
     {
       "realm": "{{ fs_realm }}",
-      "realm-public-key": "{{ fs_realm_public_key }}",
+      "realm-public-key": "{{ keycloak_realm_public_key_fact }}",
       "bearer-only": false,
       "auth-server-url": "{{ keycloak_server_url }}",
       "ssl-required": "none",

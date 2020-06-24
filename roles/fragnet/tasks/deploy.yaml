@@ -27,52 +27,58 @@
     definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
     wait: yes
 
-# Configure the Fragnet Search Keycloak Client.
-#
-# The user is assumed to have created a realm
-# and we simply need to add a Role to that realm and then
-# register the Fragnet Search Client.
+# Adjust the Keycloak realm?
 
-- import_tasks: get-keycloak-realm-manager-credentials.yaml
-  vars:
-    realm_name: "{{ fs_realm }}"
-    realm_namespace: "{{ ir_namespace }}"
+- block:
 
-- name: Add realm roles
-  include_role:
-    name: informaticsmatters.infrastructure_user
-  vars:
-    iu_action: create
-    iu_type: role
-    iu_hostname: "{{ keycloak_server_url|urlsplit('hostname') }}"
-    iu_realm: "{{ fs_realm }}"
-    iu_realm_manager: "{{ keycloak_realm_manager_fact }}"
-    iu_realm_manager_password: "{{ keycloak_realm_manager_password_fact }}"
-    iu_roles:
-    - name: fragnet-search
+  # Configure the Fragnet Search Keycloak Client.
+  #
+  # The user is assumed to have created a realm
+  # and we simply need to add a Role to that realm and then
+  # register the Fragnet Search Client.
 
-- name: Add Keycloak Fragnet Search Client
-  keycloak_client:
-    auth_client_id: admin-cli
-    auth_keycloak_url: "{{ keycloak_server_url }}"
-    auth_realm: "{{ fs_realm }}"
-    auth_username: "{{ keycloak_realm_manager_fact }}"
-    auth_password: "{{ keycloak_realm_manager_password_fact }}"
-    realm: "{{ fs_realm }}"
-    client_id: "{{ fs_keycloak_client_id }}"
-    protocol: openid-connect
-    base_url: https://{{ fs_hostname }}
-    web_origins:
-    - https://{{ fs_hostname }}
-    redirect_uris:
-    - https://{{ fs_hostname }}/*
-    public_client: yes
-    service_accounts_enabled: yes
-    direct_access_grants_enabled: yes
-    standard_flow_enabled: yes
-    default_roles:
-    - fragnet-search
-  delegate_to: localhost
+  - import_tasks: get-keycloak-realm-manager-credentials.yaml
+    vars:
+      realm_name: "{{ fs_realm }}"
+      realm_namespace: "{{ ir_namespace }}"
+
+  - name: Add realm roles
+    include_role:
+      name: informaticsmatters.infrastructure_user
+    vars:
+      iu_action: create
+      iu_type: role
+      iu_hostname: "{{ keycloak_server_url|urlsplit('hostname') }}"
+      iu_realm: "{{ fs_realm }}"
+      iu_realm_manager: "{{ keycloak_realm_manager_fact }}"
+      iu_realm_manager_password: "{{ keycloak_realm_manager_password_fact }}"
+      iu_roles:
+      - name: fragnet-search
+
+  - name: Add Keycloak Fragnet Search Client
+    keycloak_client:
+      auth_client_id: admin-cli
+      auth_keycloak_url: "{{ keycloak_server_url }}"
+      auth_realm: "{{ fs_realm }}"
+      auth_username: "{{ keycloak_realm_manager_fact }}"
+      auth_password: "{{ keycloak_realm_manager_password_fact }}"
+      realm: "{{ fs_realm }}"
+      client_id: "{{ fs_keycloak_client_id }}"
+      protocol: openid-connect
+      base_url: https://{{ fs_hostname }}
+      web_origins:
+      - https://{{ fs_hostname }}
+      redirect_uris:
+      - https://{{ fs_hostname }}/*
+      public_client: yes
+      service_accounts_enabled: yes
+      direct_access_grants_enabled: yes
+      standard_flow_enabled: yes
+      default_roles:
+      - fragnet-search
+    delegate_to: localhost
+
+  when: fs_adjust_realm|bool
 
 # Extract secrets from the graph namespace
 # and then deploy the application
@@ -103,6 +109,10 @@
     that:
     - graph_user_fact|length > 0
     - graph_password_fact|length > 0
+
+- include_tasks: get-keycloak-realm-public-key.yaml
+  vars:
+    keycloak_realm_name: "{{ fs_realm }}"
 
 # Deploy the Search or UI?
 
