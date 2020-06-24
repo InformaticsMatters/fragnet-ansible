@@ -15,14 +15,11 @@ data:
   keycloak.json: |
     {
       "realm": "{{ fs_realm }}",
-      "realm-public-key": "{{ keycloak_realm_public_key_fact }}",
-      "bearer-only": false,
       "auth-server-url": "{{ keycloak_server_url }}",
-      "ssl-required": "none",
-      "disable-trust-manager": true,
+      "ssl-required": "external",
       "resource": "{{ fs_keycloak_client_id }}",
-      "principal-attribute": "preferred_username",
-      "use-resource-role-mappings": false
+      "public-client": true,
+      "confidential-port": 0
     }
 
   logging.properties: |
