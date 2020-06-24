@@ -5,7 +5,6 @@ fs_flour_services_image: squonk/fragnet-services
 # Details of the UI image (which needs an image pull-secret)
 fs_flavour_ui_image: registry.gitlab.com/informaticsmatters/fragnet-ui
 
-fs_namespace: fragnet-search
 fs_sa: fragnet-search
 fs_sa_psp: im-core-unrestricted
 

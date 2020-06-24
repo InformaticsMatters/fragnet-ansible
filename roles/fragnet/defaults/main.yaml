@@ -11,6 +11,8 @@ fs_flavour: services
 # This should be a valid version for the selected flavour, i.e. a version
 # for the services image or one that is valid for the ui image.
 fs_image_tag: 0.5.6
+# The namespace to deploy to
+fs_namespace: fragnet-search
 
 # Realm
 fs_realm: squonk
