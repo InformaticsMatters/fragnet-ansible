@@ -106,10 +106,10 @@
 
 # Deploy the Search or UI?
 
-- include_tasks: deploy-search
+- include_tasks: deploy-search.yaml
   when: fs_flavour == 'search'
 
-- include_tasks: deploy-ui
+- include_tasks: deploy-ui.yaml
   when: fs_flavour == 'ui'
 
 # And now the service and route...
