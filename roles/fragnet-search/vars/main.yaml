@@ -1,12 +1,13 @@
 ---
 
+# Details of the UI image (which needs an image pull-secret)
+fs_flavour_ui_image: docker.io/informaticsmatters/fragnet-ui
+# Details of the Search image
+fs_flour_search_image: registry.gitlab.com/informaticsmatters/fragnet-search
+
 fs_namespace: fragnet-search
 fs_sa: fragnet-search
 fs_sa_psp: im-core-unrestricted
-
-fs_image_registry: registry.gitlab.com
-fs_image_repository: informaticsmatters
-fs_image_name: fragnet-ui
 
 fs_node_purpose: application
 fs_pod_ready_timeout: 600

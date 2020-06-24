@@ -9,7 +9,7 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      name: fragnet-search
+      name: fragnet
   template:
     metadata:
       labels:
@@ -32,7 +32,7 @@ spec:
 
       containers:
       - name: fragnet-search
-        image: {{ fs_image_registry }}/{{ fs_image_repository }}/{{ fs_image_name }}:{{ fs_image_tag }}
+        image: {{ fs_flour_search_image }}:{{ fs_image_tag }}
 {% if fs_image_tag in ['latest', 'stable'] %}
         imagePullPolicy: Always
 {% else %}
@@ -77,18 +77,7 @@ spec:
         - mountPath: /usr/local/tomcat/conf/server.xml
           name: fs-config-map-search
           subPath: server.xml
-        - mountPath: /usr/local/tomcat/webapps/ROOT/config.json
-          name: fs-config-map-ui
-          subPath: config.json
-        - mountPath: /usr/local/tomcat/webapps/ROOT/keycloak.json
-          name: fs-config-map-ui
-          subPath: keycloak.json
       volumes:
       - name: fs-config-map-search
         configMap:
           name: fs-config-map-search
-      - name: fs-config-map-ui
-        configMap:
-          name: fs-config-map-ui
-      imagePullSecrets:
-      - name: ui-pull-secret

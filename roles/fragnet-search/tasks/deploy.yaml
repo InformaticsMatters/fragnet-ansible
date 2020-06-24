@@ -5,10 +5,7 @@
     that:
     - fs_realm_public_key != 'SetMe'
     - fs_realm_public_key|string|length > 0
-
-- name: Include pull secrets
-  include_vars:
-    file: pull-secrets.vault
+    - fs_flavour|string in ['search', 'ui']
 
 # Create the namespace and other basic materials
 #
@@ -77,19 +74,6 @@
     - fragnet-search
   delegate_to: localhost
 
-# Create secret objects for each image pull secret defined.
-# These are typically used to pull container images
-# from private registries.
-
-- name: Create image pull secrets
-  k8s:
-    definition: "{{ lookup('template', 'secret-imagepull.yaml.j2') }}"
-    wait: yes
-  vars:
-    pull_name: "{{ item.name }}"
-    pull_secret: "{{ item.secret }}"
-  with_items: "{{ fs_pull_secrets }}"
-
 # Extract secrets from the graph namespace
 # and then deploy the application
 
@@ -120,18 +104,23 @@
     - graph_user_fact|length > 0
     - graph_password_fact|length > 0
 
-- name: Deploy Fragnet Search objects
+# Deploy the Search or UI?
+
+- include_tasks: deploy-search
+  when: fs_flavour == 'search'
+
+- include_tasks: deploy-ui
+  when: fs_flavour == 'ui'
+
+# And now the service and route...
+
+- name: Deploy Service
   k8s:
-    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    definition: "{{ lookup('template', 'service.yaml.j2') }}"
     wait: yes
     wait_timeout: "{{ fs_pod_ready_timeout }}"
-  loop:
-  - configmap-search
-  - configmap-ui
-  - deployment
-  - service
 
-- name: Deploy Fragnet Search Route (OpenShift)
+- name: Deploy Route (OpenShift)
   k8s:
     definition: "{{ lookup('template', 'route.yaml.j2') }}"
     wait: yes
@@ -139,7 +128,7 @@
   - okd_master_hostname is defined
   - fs_enable_route|bool
 
-- name: Deploy Fragnet Search Ingress (Kubernetes)
+- name: Deploy Ingress (Kubernetes)
   k8s:
     definition: "{{ lookup('template', 'ingress.yaml.j2') }}"
     wait: yes
