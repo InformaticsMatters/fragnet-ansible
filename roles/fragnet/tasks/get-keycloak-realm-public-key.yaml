@@ -25,7 +25,7 @@
 
 - name: Get Keycloak Realm Public Key ({{ keycloak_realm_name }} realm)
   uri:
-    url: "{{ keycloak_server_url }}/auth/realms/{{ keycloak_realm_name }}/"
+    url: "{{ keycloak_server_url }}/realms/{{ keycloak_realm_name }}/"
     method: GET
   register: result
   changed_when: no
