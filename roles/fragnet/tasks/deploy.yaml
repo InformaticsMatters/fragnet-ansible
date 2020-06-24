@@ -76,7 +76,7 @@
       - fragnet-search
     delegate_to: localhost
 
-  when: fs_adjust_realm|bool
+  when: fs_alter_realm|bool
 
 # Extract secrets from the graph namespace
 # and then deploy the application

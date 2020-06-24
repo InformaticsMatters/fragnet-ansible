@@ -12,7 +12,7 @@
     wait: yes
 
 # ...and then clean-up the infrastructure?
-# Yes if fs_adjust_realm is 'yes'
+# Yes if fs_alter_realm is 'yes'
 
 - block:
 
@@ -46,4 +46,4 @@
       iu_roles:
       - name: fragnet-search
 
-  when: fs_adjust_realm|bool
+  when: fs_alter_realm|bool
