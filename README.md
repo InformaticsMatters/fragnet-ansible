@@ -8,8 +8,8 @@ projects, suitable for execution by [AWX].
 
 This project contains two Ansible roles:-
 
-*   **fragnet-search** (which is basically the UI)
-*   **fragnet-search-test**
+*   **fragnet** (which is basically the Services or UI)
+*   **fragnet-test**
 
 >   Note: The Roles are designed to be executed from within our AWX server
     where credentials for the cluster (Kubernetes), Keycloak and Graph reside.
@@ -23,11 +23,11 @@ in each role's `defaults/main.yaml` and less common variables in
 ## Ansible Vault
 The project uses files encrypted by Ansible Vault. AWX will inject
 the vault secret but if you want to edit or inspect the secret file
-(`roles/fragnet-search/vars/pull-secrets.vault`) you will need
+(`roles/fragnet/vars/pull-secrets.vault`) you will need
 the vault key, which can be found in our **KeePass** application under
 `fragnet-search -> Ansible Vault Password`: -
 
-    $ ansible-vault edit roles/fragnet-search/vars/pull-secrets.vault
+    $ ansible-vault edit roles/fragnet/vars/pull-secrets.vault
 
 ## fragnet-search role
 As the search depends on a privately-hosted container image
@@ -42,10 +42,10 @@ secrets suitable for use as `imagePullSecrets`.
 
 The Role has a number of playbooks: -
 
-1.  `site-fragnet-search.yaml` (The main application deployment)
-2.  `site-fragnet-search_add-route.yaml`
+1.  `site-fragnet.yaml` (The main application deployment)
+2.  `site-fragnet_add-route.yaml`
     (legacy as main playbook deploys an Ingress but still of some use)
-3.  `site-fragnet-search_remove-route.yaml` 
+3.  `site-fragnet_remove-route.yaml` 
     (legacy as main playbook deploys an Ingress but still of some use)
 
 The main role deploys: -
@@ -67,7 +67,7 @@ Fragnet-UI is deployed against a graph that was built with our
 
 The Role has one playbook: -
 
-1.  `site-fragnet-search-test.yaml`
+1.  `site-fragnet-test.yaml`
 
 There are basic tests for the following fragment combinations: -
 
