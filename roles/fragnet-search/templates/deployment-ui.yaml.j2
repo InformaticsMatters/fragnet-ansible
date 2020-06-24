@@ -86,9 +86,9 @@ spec:
       volumes:
       - name: fs-config-map-services
         configMap:
-          name: fs-config-map-services
+          name: services
       - name: fs-config-map-ui
         configMap:
-          name: fs-config-map-ui
+          name: ui
       imagePullSecrets:
       - name: ui-pull-secret
