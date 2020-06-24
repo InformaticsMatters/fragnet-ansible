@@ -15,12 +15,14 @@ data:
   keycloak.json: |
     {
       "realm": "{{ fs_realm }}",
-      "auth-server-url": "{{ keycloak_server_url }}/",
-      "ssl-required": "external",
+      "bearer-only": false,
+      "auth-server-url": "{{ keycloak_server_url }}",
+      "ssl-required": "none",
+      "disable-trust-manager": true,
       "resource": "{{ fs_keycloak_client_id }}",
       "public-client": true,
       "verify-token-audience": true,
-      "use-resource-role-mappings": true,
+      "use-resource-role-mappings": false,
       "confidential-port": 0
     }
 
