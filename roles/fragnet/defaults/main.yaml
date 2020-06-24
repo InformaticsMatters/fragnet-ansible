@@ -5,7 +5,8 @@ fs_state: present
 
 # The fragnet flavour to deploy - this is either
 # 'services' for the core Search container, or
-# 'ui' for the Fragnet Search UI.
+# 'ui' for the UI. The UI is not a public container image
+# so you'll need credentials (a pull-secret0 to deploy it).
 fs_flavour: services
 # The flavour version.
 # This should be a valid version for the selected flavour, i.e. a version
