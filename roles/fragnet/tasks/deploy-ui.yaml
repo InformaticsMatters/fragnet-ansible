@@ -17,6 +17,20 @@
     pull_secret: "{{ item.secret }}"
   with_items: "{{ fs_pull_secrets }}"
 
+# Set the 'services' hostname fact.
+# It's either co-located (i.e. the same as 'fs_hostname')
+# or remote (i.e. 'fs_remote_services_hostname' is set)
+
+- name: Set services hostname (co-located)
+  set_fact:
+    fs_services_hostname_fact: "{{ fs_fs_hostname }}"
+  when: fs_remote_services_hostname|string|length == 0
+
+- name: Set services hostname (remote)
+  set_fact:
+    fs_services_hostname_fact: "{{ fs_remote_services_hostname }}"
+  when: fs_remote_services_hostname|string|length > 0
+
 - name: Deploy Fragnet UI objects
   k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"

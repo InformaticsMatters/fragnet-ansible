@@ -116,7 +116,8 @@
 - include_tasks: deploy-ui.yaml
   when: fs_flavour == 'ui'
 
-# And now the service and route...
+# And now the service
+# and optional ingress/route...
 
 - name: Deploy Service
   k8s:
@@ -131,6 +132,7 @@
   when:
   - okd_master_hostname is defined
   - fs_enable_route|bool
+  - fs_hostname|string|length > 0
 
 - name: Deploy Ingress (Kubernetes)
   k8s:
@@ -139,3 +141,4 @@
   when:
   - okd_master_hostname is not defined
   - fs_enable_route|bool
+  - fs_hostname|string|length > 0

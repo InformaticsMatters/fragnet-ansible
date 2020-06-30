@@ -23,11 +23,32 @@ fs_realm: squonk
 # into account when the app is removed. If fs_alter_realm is 'yes'
 # when you undeploy, the client ID and roles are removed.
 fs_alter_realm: no
-
-# Main application variables
-fs_hostname: fragnet.informaticsmatters.com
-fs_cert_issuer: production
 fs_keycloak_client_id: fragnet-search
+
+# Deploying 'services' and the 'ui'.
+#
+# Deploying services (internal) without the UI.
+#   - You've set 'fs_flavour' to 'services'
+#   - Set 'fs_hostname' to a blank string ('').
+#     This will prevent the ingress object from being deployed.
+#
+# Deploying services (remote) without the UI.
+#   - You've set 'fs_flavour' to 'services'
+#   - Set 'fs_hostname' to the hostname you want to use.
+#
+# Deploying co-located UI and services
+#   - You've set 'fs_flavour' to 'ui'
+#   - Set 'fs_hostname to the hostname you want to use for the UI (and services)
+#   - Leave 'fs_remote_services_hostname' blank ('')
+#
+# Deploying a UI container for use with a remote services container
+#   - You've set 'fs_flavour' to 'ui'
+#   - Set 'fs_hostname to the hostname you want to use for the UI
+#   - Set 'fs_remote_services_hostname' to the hostname for the external
+#     services. This must be using secure HTTP,
+#     i.e. 'https://{{ fs_services_hostname }}' must be valid.
+fs_hostname: fragnet.informaticsmatters.com
+fs_remote_services_hostname: ''
 
 # Route and (ACME) Certificate creation
 fs_enable_route: yes

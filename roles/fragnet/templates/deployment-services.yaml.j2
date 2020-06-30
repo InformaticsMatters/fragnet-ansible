@@ -32,7 +32,7 @@ spec:
 
       containers:
       - name: fragnet-services
-        image: {{ fs_flour_services_image }}:{{ fs_image_tag }}
+        image: {{ fs_flavour_services_image }}:{{ fs_image_tag }}
 {% if fs_image_tag in ['latest', 'stable'] %}
         imagePullPolicy: Always
 {% else %}

@@ -43,14 +43,21 @@ spec:
         - containerPort: 8080
           name: http
         env:
+        - name: LOG_ROOT
+          value: /logs
+{% if fs_remote_services_hostname == '' %}
+{#
+   We only need to define NEO4J variables
+   if this is a co-located ui/services container,
+   i.e. the remote services hostname is blank
+#}
         - name: NEO4J_SERVER
           value: '{{ graph_service }}.{{ graph_namespace }}.svc'
         - name: NEO4J_USER
           value: {{ graph_user_fact }}
         - name: NEO4J_PASSWORD
           value: {{ graph_password_fact }}
-        - name: LOG_ROOT
-          value: /logs
+{% endif %}
         resources:
           limits:
             cpu: 4000m
