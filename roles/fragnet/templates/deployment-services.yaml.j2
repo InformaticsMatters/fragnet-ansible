@@ -46,9 +46,9 @@ spec:
         - name: NEO4J_SERVER
           value: '{{ graph_service }}.{{ graph_namespace }}.svc'
         - name: NEO4J_USER
-          value: {{ graph_user_fact }}
+          value: {{ graph_user_fact|default('neo4j', true) }}
         - name: NEO4J_PASSWORD
-          value: {{ graph_password_fact }}
+          value: {{ graph_password_fact|default('neo4j', true) }}
         - name: LOG_ROOT
           value: /logs
         resources:
