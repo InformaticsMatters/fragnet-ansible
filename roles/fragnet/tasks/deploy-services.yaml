@@ -1,5 +1,40 @@
 ---
 
+# Extract secrets from the graph namespace
+# and then deploy the application.
+#
+# When deploying 'services' a Graph must exist
+# in the namespace {{ graph_namespace }}.
+
+- name: Get graph secrets (from namespace '{{ graph_namespace }}')
+  k8s_info:
+    kind: Secret
+    api_version: v1
+    name: graph-secrets
+    namespace: "{{ graph_namespace }}"
+  register: graph_s_result
+
+- name: Check graph secrets
+  assert:
+    that: graph_s_result.resources|length == 1
+
+- name: Set neo4j_auth fact from secrets
+  set_fact:
+    graph_neo4j_auth_fact: "{{ graph_s_result.resources[0].data.neo4j_auth|b64decode }}"
+
+- name: Get neo4j credential facts from neo4j_auth fact
+  set_fact:
+    graph_user_fact: "{{ graph_neo4j_auth_fact.split('/')[0] }}"
+    graph_password_fact: "{{ graph_neo4j_auth_fact.split('/')[1] }}"
+
+- name: Check graph credentials
+  assert:
+    that:
+    - graph_user_fact|length > 0
+    - graph_password_fact|length > 0
+
+# OK - we have a graph, deploy the services container...
+
 - name: Deploy Fragnet Services objects
   k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"

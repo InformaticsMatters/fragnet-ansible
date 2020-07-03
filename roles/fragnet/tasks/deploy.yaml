@@ -78,36 +78,6 @@
 
   when: fs_alter_realm|bool
 
-# Extract secrets from the graph namespace
-# and then deploy the application
-
-- name: Get graph secrets (from namespace '{{ graph_namespace }}')
-  k8s_info:
-    kind: Secret
-    api_version: v1
-    name: graph-secrets
-    namespace: "{{ graph_namespace }}"
-  register: graph_s_result
-
-- name: Check graph secrets
-  assert:
-    that: graph_s_result.resources|length == 1
-
-- name: Set neo4j_auth fact from secrets
-  set_fact:
-    graph_neo4j_auth_fact: "{{ graph_s_result.resources[0].data.neo4j_auth|b64decode }}"
-
-- name: Get neo4j credential facts from neo4j_auth fact
-  set_fact:
-    graph_user_fact: "{{ graph_neo4j_auth_fact.split('/')[0] }}"
-    graph_password_fact: "{{ graph_neo4j_auth_fact.split('/')[1] }}"
-
-- name: Check graph credentials
-  assert:
-    that:
-    - graph_user_fact|length > 0
-    - graph_password_fact|length > 0
-
 # Deploy the Search or UI?
 
 - include_tasks: deploy-services.yaml
