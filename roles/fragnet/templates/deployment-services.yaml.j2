@@ -2,18 +2,18 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: fragnet-search
+  name: fragnet-services
   namespace: {{ fs_namespace }}
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      name: fragnet-search
+      name: fragnet
   template:
     metadata:
       labels:
-        name: fragnet-search
+        name: fragnet
     spec:
       serviceAccountName: {{ fs_sa }}
 
@@ -31,13 +31,14 @@ spec:
                 - {{ fs_node_purpose }}
 
       containers:
-      - name: fragnet-search
-        image: {{ fs_image_registry }}/{{ fs_image_repository }}/{{ fs_image_name }}:{{ fs_image_tag }}
+      - name: fragnet-services
+        image: {{ fs_flavour_services_image }}:{{ fs_image_tag }}
 {% if fs_image_tag in ['latest', 'stable'] %}
         imagePullPolicy: Always
 {% else %}
         imagePullPolicy: IfNotPresent
 {% endif %}
+        terminationMessagePolicy: FallbackToLogsOnError
         ports:
         - containerPort: 8080
           name: http
@@ -45,9 +46,9 @@ spec:
         - name: NEO4J_SERVER
           value: '{{ graph_service }}.{{ graph_namespace }}.svc'
         - name: NEO4J_USER
-          value: {{ graph_user_fact }}
+          value: {{ graph_user_fact|default('neo4j', true) }}
         - name: NEO4J_PASSWORD
-          value: {{ graph_password_fact }}
+          value: {{ graph_password_fact|default('neo4j', true) }}
         - name: LOG_ROOT
           value: /logs
         resources:
@@ -59,35 +60,24 @@ spec:
             memory: 4Gi
         volumeMounts:
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/META-INF/context.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: context.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/keycloak.json
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: keycloak.json
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/logging.properties
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: logging.properties
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/web.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: web.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/server.xml
-          name: fs-config-map-search
+          name: fs-config-map-services
           subPath: server.xml
-        - mountPath: /usr/local/tomcat/webapps/ROOT/config.json
-          name: fs-config-map-ui
-          subPath: config.json
-        - mountPath: /usr/local/tomcat/webapps/ROOT/keycloak.json
-          name: fs-config-map-ui
-          subPath: keycloak.json
       volumes:
-      - name: fs-config-map-search
+      - name: fs-config-map-services
         configMap:
-          name: fs-config-map-search
-      - name: fs-config-map-ui
-        configMap:
-          name: fs-config-map-ui
-      imagePullSecrets:
-      - name: ui-pull-secret
+          name: services

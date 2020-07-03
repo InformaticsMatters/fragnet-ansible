@@ -2,11 +2,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: fragnet-search
+  name: fragnet
   namespace: {{ fs_namespace }}
 spec:
   selector:
-    name: fragnet-search
+    name: fragnet
   ports:
   - name: http
     port: 80

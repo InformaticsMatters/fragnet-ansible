@@ -39,7 +39,7 @@
   - name: Get expected Route (OpenShift)
     k8s_info:
       kind: Route
-      name: fragnet-search
+      name: fragnet
       namespace: "{{ fs_namespace }}"
     register: route_result
     when: okd_master_hostname is defined

@@ -1,0 +1,80 @@
+---
+
+# Set to 'absent' to undeploy Fragnet Search
+fs_state: present
+
+# The fragnet flavour to deploy - this is either
+# 'services' for the core container, or
+# 'ui' for the UI. The UI is not a public container image
+# so you'll need credentials (a pull-secret) to deploy it.
+fs_flavour: services
+# The flavour version.
+# This should be a valid version for the selected flavour, i.e. a version
+# for the services image or one that is valid for the ui image.
+fs_image_tag: 0.5.6
+# The namespace to deploy to
+fs_namespace: fragnet-search
+
+# Realm
+fs_realm: squonk
+# Alter the realm? i.e. create the client ID and roles?
+# But default 'no'. Set to 'yes' if you need to create the
+# client ID and the application roles. This is also taken
+# into account when the app is removed. If fs_alter_realm is 'yes'
+# when you undeploy, the client ID and roles are removed.
+fs_alter_realm: no
+fs_keycloak_client_id: fragnet-search
+
+# Deploying 'services' and the 'ui'.
+#
+# Deploying services (internal) without the UI.
+#   - You've set 'fs_flavour' to 'services'
+#   - Set 'fs_hostname' to a blank string ('').
+#     This will prevent the ingress object from being deployed.
+#
+# Deploying services (remote) without the UI.
+#   - You've set 'fs_flavour' to 'services'
+#   - Set 'fs_hostname' to the hostname you want to use.
+#
+# Deploying co-located UI and services
+#   - You've set 'fs_flavour' to 'ui'
+#   - Set 'fs_hostname to the hostname you want to use for the UI (and services)
+#   - Leave 'fs_remote_services_hostname' blank ('')
+#
+# Deploying a UI container for use with a remote services container
+#   - You've set 'fs_flavour' to 'ui'
+#   - Set 'fs_hostname to the hostname you want to use for the UI
+#   - Set 'fs_remote_services_hostname' to the hostname for the external
+#     services. This must be using secure HTTP,
+#     i.e. 'https://{{ fs_services_hostname }}' must be valid.
+fs_hostname: fragnet.informaticsmatters.com
+fs_remote_services_hostname: ''
+
+# Route and (ACME) Certificate creation
+fs_enable_route: yes
+fs_enable_acme: no
+
+# The namespace the infrastructure is deployed to.
+# This will be where we can find Keycloak.
+ir_namespace: im-infra
+
+# Provided by our chosen AWX/Tower Keycloak credentials
+# (keycloak credential type)...
+
+keycloak_server_url: "{{ lookup('env', 'KEYCLOAK_SERVER_URL') }}"
+keycloak_admin: "{{ lookup('env', 'KEYCLOAK_ADMIN') }}"
+keycloak_admin_password: "{{ lookup('env', 'KEYCLOAK_ADMIN_PASSWORD') }}"
+keycloak_public_key: "{{ lookup('env', 'KEYCLOAK_PUBLIC_KEY') }}"
+keycloak_secret: "{{ lookup('env', 'KEYCLOAK_SECRET') }}"
+keycloak_realm: "{{ lookup('env', 'KEYCLOAK_REALM') }}"
+
+# The namespace and service name of the graph instance
+# We use this to construct the bolt service name
+# and use the namespace to collect the graph credentials
+# (which are stored in a secret in the namespace).
+#
+# For most deployments this does not have to be set
+# as it is expected that the graph database in in the
+# 'graph' namespace with bolt service on 'graph.graph.svc'.
+graph_namespace: graph
+graph_service: graph

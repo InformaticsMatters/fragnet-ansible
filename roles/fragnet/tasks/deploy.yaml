@@ -1,0 +1,114 @@
+---
+
+- name: Pre-flight checks
+  assert:
+    that:
+    - fs_flavour|string in ['services', 'ui']
+
+# Create the namespace and other basic materials
+#
+# For the deployment to work
+# the anticipated infrastructure-deployed PSP is used.
+
+- name: Create namespace
+  k8s:
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    wait: yes
+  loop:
+  - namespace
+  - serviceaccount
+  - role
+  - rolebinding-fs-sa
+
+- name: Relax {{ fs_namespace }} 'default' service account (for cert-manager)
+  k8s:
+    definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
+    wait: yes
+
+# Adjust the Keycloak realm?
+
+- block:
+
+  # Configure the Fragnet Search Keycloak Client.
+  #
+  # The user is assumed to have created a realm
+  # and we simply need to add a Role to that realm and then
+  # register the Fragnet Search Client.
+
+  - import_tasks: get-keycloak-realm-manager-credentials.yaml
+    vars:
+      realm_name: "{{ fs_realm }}"
+      realm_namespace: "{{ ir_namespace }}"
+
+  - name: Add realm roles
+    include_role:
+      name: informaticsmatters.infrastructure_user
+    vars:
+      iu_action: create
+      iu_type: role
+      iu_hostname: "{{ keycloak_server_url|urlsplit('hostname') }}"
+      iu_realm: "{{ fs_realm }}"
+      iu_realm_manager: "{{ keycloak_realm_manager_fact }}"
+      iu_realm_manager_password: "{{ keycloak_realm_manager_password_fact }}"
+      iu_roles:
+      - name: fragnet-search
+
+  - name: Add Keycloak Fragnet Search Client
+    keycloak_client:
+      auth_client_id: admin-cli
+      auth_keycloak_url: "{{ keycloak_server_url }}"
+      auth_realm: "{{ fs_realm }}"
+      auth_username: "{{ keycloak_realm_manager_fact }}"
+      auth_password: "{{ keycloak_realm_manager_password_fact }}"
+      realm: "{{ fs_realm }}"
+      client_id: "{{ fs_keycloak_client_id }}"
+      protocol: openid-connect
+      base_url: https://{{ fs_hostname }}
+      web_origins:
+      - https://{{ fs_hostname }}
+      redirect_uris:
+      - https://{{ fs_hostname }}/*
+      public_client: yes
+      service_accounts_enabled: yes
+      direct_access_grants_enabled: yes
+      standard_flow_enabled: yes
+      default_roles:
+      - fragnet-search
+    delegate_to: localhost
+
+  when: fs_alter_realm|bool
+
+# Deploy the Search or UI?
+
+- include_tasks: deploy-services.yaml
+  when: fs_flavour == 'services'
+
+- include_tasks: deploy-ui.yaml
+  when: fs_flavour == 'ui'
+
+# And now the service
+# and optional ingress/route...
+
+- name: Deploy Service
+  k8s:
+    definition: "{{ lookup('template', 'service.yaml.j2') }}"
+    wait: yes
+    wait_timeout: "{{ fs_pod_ready_timeout }}"
+
+- name: Deploy Route (OpenShift)
+  k8s:
+    definition: "{{ lookup('template', 'route.yaml.j2') }}"
+    wait: yes
+  when:
+  - okd_master_hostname is defined
+  - fs_enable_route|bool
+  - fs_hostname|string|length > 0
+
+- name: Deploy Ingress (Kubernetes)
+  k8s:
+    definition: "{{ lookup('template', 'ingress.yaml.j2') }}"
+    wait: yes
+  when:
+  - okd_master_hostname is not defined
+  - fs_enable_route|bool
+  - fs_hostname|string|length > 0

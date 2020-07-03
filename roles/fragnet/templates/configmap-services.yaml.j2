@@ -2,7 +2,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: fs-config-map-search
+  name: services
   namespace: {{ fs_namespace }}
 data:
 
@@ -14,18 +14,12 @@ data:
 
   keycloak.json: |
     {
-      "realm": "{{ keycloak_realm }}",
-      "realm-public-key": "{{ keycloak_public_key }}",
-      "bearer-only": false,
+      "realm": "{{ fs_realm }}",
       "auth-server-url": "{{ keycloak_server_url }}",
-      "ssl-required": "none",
-      "disable-trust-manager": true,
+      "ssl-required": "external",
       "resource": "{{ fs_keycloak_client_id }}",
-      "principal-attribute": "preferred_username",
-      "credentials": {
-        "secret": "{{ keycloak_secret }}"
-      },
-      "use-resource-role-mappings": false
+      "public-client": true,
+      "confidential-port": 0
     }
 
   logging.properties: |
@@ -100,7 +94,7 @@ data:
         </security-constraint>
         <login-config>
             <auth-method>KEYCLOAK</auth-method>
-            <realm-name>{{ keycloak_realm }}</realm-name>
+            <realm-name>{{ fs_realm }}</realm-name>
         </login-config>
         <security-role>
             <role-name>fragnet-search</role-name>

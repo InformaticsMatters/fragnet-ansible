@@ -11,4 +11,4 @@
       validate_certs: no
   tasks:
   - include_role:
-      name: fragnet-search-test
+      name: fragnet-test

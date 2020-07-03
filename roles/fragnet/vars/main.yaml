@@ -1,0 +1,13 @@
+---
+
+# Details of the Services image
+fs_flavour_services_image: squonk/fragnet-services
+# Details of the UI image (which needs an image pull-secret)
+fs_flavour_ui_image: registry.gitlab.com/informaticsmatters/fragnet-ui
+
+fs_cert_issuer: production
+fs_sa: fragnet-search
+fs_sa_psp: im-core-unrestricted
+
+fs_node_purpose: application
+fs_pod_ready_timeout: 600
