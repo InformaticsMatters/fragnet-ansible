@@ -17,18 +17,25 @@ spec:
     spec:
       serviceAccountName: {{ fs_sa }}
 
-      # A 'preferred' (not guaranteed)
-      # node selection affinity...
+      # Avoid 'worker' nodes
+      # and prefer 'application' nodes
       affinity:
         nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: informaticsmatters.com/purpose
+                operator: NotIn
+                values:
+                - worker
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 1
             preference:
               matchExpressions:
-              - key: purpose
+              - key: informaticsmatters.com/purpose
                 operator: In
                 values:
-                - {{ fs_node_purpose }}
+                - application
 
       containers:
       - name: fragnet-services
@@ -53,11 +60,15 @@ spec:
           value: /logs
         resources:
           limits:
-            cpu: 4000m
-            memory: 8Gi
+{% if fs_service_cpu_limit %}
+            cpu: {{ fs_service_cpu_limit }}
+{% endif %}
+{% if fs_service_mem_limit %}
+            memory: {{ fs_service_mem_limit }}
+{% endif %}
           requests:
-            cpu: 1000m
-            memory: 4Gi
+            cpu: {{ fs_service_cpu_request }}
+            memory: {{ fs_service_mem_request }}
         volumeMounts:
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/META-INF/context.xml
           name: fs-config-map-services
