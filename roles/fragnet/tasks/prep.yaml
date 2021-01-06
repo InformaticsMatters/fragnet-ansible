@@ -8,6 +8,9 @@
     var: ansible_version.full
 
 # Basic pre-playbook prerequisites.
+# To support AWX changes we protect ourselves from trying to
+# install a package if it already exists. In the case of
+# kubernetes it's needed in AWX 11 but not in AWX 15.
 # We need the openshift/kubernetes module amongst other things...
 
 - name: Get built-in Python packages
