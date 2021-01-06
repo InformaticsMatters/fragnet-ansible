@@ -24,15 +24,20 @@
     var: installed_python_packages
     verbosity: 3
 
-- name: stop
-  assert:
-    that: 1 == 2
-
 - name: Install prerequisite Python modules
   pip:
-    name:
-    - jmespath==0.9.4
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
     extra_args: --user
+  loop:
+  - { name: 'jmespath', version: '0.9.4' }
+  - { name: 'kubernetes', version: '10.0.1' }
+  - { name: 'openshift', version: '0.10.0' }
+  when: item.name not in installed_python_packages
+
+- name: Stop
+  assert:
+    that: 1 == 2
 
 # Install required Ansible Galaxy modules
 
