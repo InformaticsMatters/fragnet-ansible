@@ -33,6 +33,7 @@ fs_alter_realm: no
 fs_keycloak_client_id: fragnet-search
 
 # Locations (hostnames and paths) for the various services
+# We need values for the depict, search and ui 'flavours'
 fs_location:
   depict:
     hostname: squonk.it

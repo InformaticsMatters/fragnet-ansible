@@ -7,7 +7,7 @@
 
 # Paths must be blank or start with a '/'
 
-- name: Assert all hostname and path values
+- name: Assert hostname and path values
   assert:
     that:
     - fs_location[item].hostname|string|length > 0
@@ -16,6 +16,7 @@
   - depict
   - search
   - ui
+  when: item in fs_location
 
 # Create the namespace and other basic materials
 #
