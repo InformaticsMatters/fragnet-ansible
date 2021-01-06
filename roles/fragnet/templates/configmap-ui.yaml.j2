@@ -8,7 +8,9 @@ data:
 
   config.json: |
     {
-      "FRAGNET_SERVER": "https://{{ fs_services_hostname_fact }}"
+      "FRAGNET_DEPICT_SERVER": "https://{{ fs_depict_hostname_fact }}{{ fs_depict_path }}"
+      "FRAGNET_SEARCH_SERVER": "https://{{ fs_search_hostname_fact }}{{ fs_search_path }}"
+      "GANALYTICS_ID": "{{ fs_ui_google_analytics_id }}"
     }
 
   keycloak.json: |

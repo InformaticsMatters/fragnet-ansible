@@ -9,4 +9,3 @@ script:
 - yamllint .
 - find . -type f -iname '*.yaml.j2' -exec yamllint {} \;
 - find . -type f -iname '*.yml.j2' -exec yamllint {} \;
-- ansible-lint

@@ -2,12 +2,6 @@
 
 - include_tasks: prep.yaml
 
-# If it looks like we're deploying to OpenShift
-# we need to use the k8s authentication module to login
-# and obtain an API key.
-- include_tasks: login.yaml
-  when: okd_master_hostname is defined
-
 # A kubernetes (or OpenShift) host and an API key must be set.
 # We will either have authenticated against an OpenShift server
 # or the AWX kubernetes credentials will have injected suitable
@@ -36,34 +30,12 @@
       that: namespace_info.resources|length > 0
       fail_msg: Namespace '{{ fs_namespace }}' does not exist
 
-  - name: Get expected Route (OpenShift)
-    k8s_info:
-      kind: Route
-      name: fragnet
-      namespace: "{{ fs_namespace }}"
-    register: route_result
-    when: okd_master_hostname is defined
-
-  - name: Add application Route (OpenShift)
-    k8s:
-      definition: "{{ lookup('template', 'route.yaml.j2') }}"
-      wait: yes
-    when:
-    - okd_master_hostname is defined
-    - route_result.resources|length == 0
-
-  - name: Add application Ingress (Kubernetes)
+  - name: Add application Ingress
     k8s:
       definition: "{{ lookup('template', 'ingress.yaml.j2') }}"
       wait: yes
-    when: okd_master_hostname is not defined
 
   module_defaults:
     group/k8s:
       host: "{{ k8s_auth_host }}"
       api_key: "{{ k8s_auth_api_key }}"
-
-# If it looks like we're deploying to OpenShift
-# we now need to logout...
-- include_tasks: logout.yaml
-  when: okd_master_hostname is defined

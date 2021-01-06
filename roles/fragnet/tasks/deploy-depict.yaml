@@ -3,7 +3,7 @@
 # Extract secrets from the graph namespace
 # and then deploy the application.
 #
-# When deploying 'services' a Graph must exist
+# When deploying 'depict' a Graph must exist
 # in the namespace {{ graph_namespace }}.
 
 - name: Get graph secrets (from namespace '{{ graph_namespace }}')
@@ -33,13 +33,12 @@
     - graph_user_fact|length > 0
     - graph_password_fact|length > 0
 
-# OK - we have a graph, deploy the services container...
+# OK - we have a graph, deploy the depict container...
 
-- name: Deploy Fragnet Services objects
+- name: Deploy Fragnet Depict objects
   k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
     wait: yes
     wait_timeout: "{{ fs_pod_ready_timeout }}"
   loop:
-  - configmap-services
-  - deployment-services
+  - deployment-depict

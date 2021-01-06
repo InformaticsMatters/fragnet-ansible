@@ -11,13 +11,13 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ fs_hostname }}
+    - {{ fs_location[fs_flavour].hostname }}
     secretName: fragnet-tls
   rules:
-  - host: {{ fs_hostname }}
+  - host: {{ fs_location[fs_flavour].hostname }}
     http:
       paths:
-      - path: /
+      - path: /{{ fs_location[fs_flavour].path|string|basename }}
         backend:
           serviceName: fragnet
           servicePort: http

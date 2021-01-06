@@ -1,8 +1,12 @@
 ---
+
+# A configMap used by multiple containers.
+# At the moment it's used by the UI and Search.
+
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: services
+  name: common
   namespace: {{ fs_namespace }}
 data:
 
@@ -52,7 +56,7 @@ data:
     <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-        <display-name>Fragnet Services</display-name>
+        <display-name>Fragnet Search</display-name>
         <listener>
             <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
         </listener>
