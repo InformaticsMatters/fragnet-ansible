@@ -6,14 +6,22 @@
 - debug:
     var: ansible_version.full
 
-- name: Display all variables/facts known for a host
-  debug:
-    var: hostvars[inventory_hostname]
-    verbosity: 4
-
 # Basic pre-playbook prerequisites.
 # We need the openshift/kubernetes module amongst other things...
 
+- name: Get installed Python packages
+  command: pip freeze
+  register: python_models
+
+- name: Display Python packages
+  debug:
+    var: python_models
+    verbosity: 3
+
+- name: stop
+  assert:
+    that: 1 == 2
+    
 - name: Install prerequisite Python modules
   pip:
     name:
