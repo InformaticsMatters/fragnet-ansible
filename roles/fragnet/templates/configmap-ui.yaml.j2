@@ -8,8 +8,8 @@ data:
 
   config.json: |
     {
-      "FRAGNET_DEPICT_SERVER": "https://{{ fs_depict_hostname_fact }}{{ fs_depict_path }}"
-      "FRAGNET_SEARCH_SERVER": "https://{{ fs_search_hostname_fact }}{{ fs_search_path }}"
+      "FRAGNET_DEPICT_SERVER": "https://{{ fs_location['depict'].hostname }}{{ fs_location['depict'].path }}"
+      "FRAGNET_SEARCH_SERVER": "https://{{ fs_location['search'].hostname }}{{ fs_location['search'].path }}"
       "GANALYTICS_ID": "{{ fs_ui_google_analytics_id }}"
     }
 
