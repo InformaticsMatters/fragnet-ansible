@@ -49,8 +49,8 @@
 - include_tasks: deploy-ui.yaml
   when: fs_flavour == 'ui'
 
-# And now the Kubernetes service
-# and optional ingress...
+# And now the Kubernetes service and ingress.
+# Every deployment has one
 
 - name: Deploy Service
   k8s:
