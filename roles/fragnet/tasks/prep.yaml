@@ -3,7 +3,8 @@
 # Common playbook preparation.
 
 # Expose ansible version
-- debug:
+- name: Debug
+  debug:
     var: ansible_version.full
 
 # Basic pre-playbook prerequisites.
@@ -15,9 +16,8 @@
 
 - name: Collect installed Python packages
   set_fact:
-    installed_python_packages: >-
-      {{ installed_python_packages|default([]) + [item.split('==')[0]] }}
-  with: python_models.stdout_lines
+    installed_python_packages: "{{ installed_python_packages|default([]) + [item.split('==')[0]] }}"
+  loop: "{{ python_models.stdout_lines }}"
 
 - name: Display Python packages
   debug:
