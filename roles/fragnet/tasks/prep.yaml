@@ -6,6 +6,11 @@
 - debug:
     var: ansible_version.full
 
+- name: Display all variables/facts known for a host
+  debug:
+    var: hostvars[inventory_hostname]
+    verbosity: 4
+
 # Basic pre-playbook prerequisites.
 # We need the openshift/kubernetes module amongst other things...
 
