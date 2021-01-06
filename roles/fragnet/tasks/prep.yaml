@@ -13,15 +13,21 @@
   command: pip freeze
   register: python_models
 
+- name: Collect installed Python packages
+  set_fact:
+    installed_python_packages: >-
+      {{ installed_python_packages|default([]) + [item.split('==')[0]] }}
+  with: python_models.stdout_lines
+
 - name: Display Python packages
   debug:
-    var: python_models
+    var: installed_python_packages
     verbosity: 3
 
 - name: stop
   assert:
     that: 1 == 2
-    
+
 - name: Install prerequisite Python modules
   pip:
     name:
