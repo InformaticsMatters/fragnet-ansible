@@ -1,6 +1,7 @@
 # Fragnet (Ansible)
 
-[![Build Status](https://travis-ci.com/InformaticsMatters/fragnet-ansible.svg?branch=master)](https://travis-ci.com/InformaticsMatters/fragnet-ansible)
+![lint](https://github.com/InformaticsMatters/fragnet-ansible/workflows/lint/badge.svg)
+
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/informaticsmatters/fragnet-ansible)
 
 [![CodeFactor](https://www.codefactor.io/repository/github/informaticsmatters/fragnet-ansible/badge)](https://www.codefactor.io/repository/github/informaticsmatters/fragnet-ansible)

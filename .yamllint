@@ -6,6 +6,7 @@ yaml-files:
 - '.yamllint'
 
 ignore: |
+  .github/
   roles/fragnet/templates/deployment-depict.yaml.j2
   roles/fragnet/templates/deployment-search.yaml.j2
   roles/fragnet/templates/deployment-ui.yaml.j2
