@@ -16,6 +16,7 @@
 - name: Get built-in Python packages
   command: pip freeze
   register: freeze_result
+  changed_when: no
 
 - name: Collect built-in Python packages
   set_fact:
