@@ -10,6 +10,9 @@ fs_flavour_ui_image: registry.gitlab.com/informaticsmatters/fragnet-ui
 # One of production or staging.
 fs_cert_issuer: production
 
+# The Ingress (nginx) Body Size
+fs_ingress_nginx_proxy_body_size: 100m
+
 fs_sa: fragnet
 fs_sa_psp: im-core-unrestricted
 
