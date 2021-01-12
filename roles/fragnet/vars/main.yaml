@@ -1,8 +1,8 @@
 ---
 
 # Details of the Depict and Search images (on Docker hub)
-fs_flavour_depict_image: squonk/fragnet-depict
-fs_flavour_search_image: squonk/fragnet-search
+fs_flavour_depict_image: docker.io/squonk/fragnet-depict
+fs_flavour_search_image: docker.io/squonk/fragnet-search
 # Details of the UI image (which needs an image pull-secret)
 fs_flavour_ui_image: registry.gitlab.com/informaticsmatters/fragnet-ui
 

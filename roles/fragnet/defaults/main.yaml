@@ -14,6 +14,10 @@ fs_flavour: search
 # This should be a valid version for the selected flavour, i.e. a version
 # for the search image, the depict image or the ui image.
 fs_image_tag: 0.5.6
+# A pull-secret for public images pulled from DockerHub.
+# If set this is the base-64 string that can be used as the value
+# in our Kubernetes Secret as the .dockerconfigjson value.
+fs_dockerhub_pullsecret: ''
 # The namespace to deploy to
 fs_namespace: fragnet-search
 

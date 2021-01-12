@@ -37,6 +37,9 @@ spec:
                 values:
                 - application
 
+      imagePullSecrets:
+      - name: ui-pull-secret
+
       containers:
       - name: fragnet-ui
         image: {{ fs_flavour_ui_image }}:{{ fs_image_tag }}
@@ -95,5 +98,3 @@ spec:
       - name: fs-config-map-ui
         configMap:
           name: ui
-      imagePullSecrets:
-      - name: ui-pull-secret

@@ -37,6 +37,11 @@ spec:
                 values:
                 - application
 
+{% if fs_dockerhub_pullsecret %}
+      imagePullSecrets:
+      - name: dockerhub-pull-secret
+{% endif %}
+
       containers:
       - name: fragnet-search
         image: {{ fs_flavour_search_image }}:{{ fs_image_tag }}
