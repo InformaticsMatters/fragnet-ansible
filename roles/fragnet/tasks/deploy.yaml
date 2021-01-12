@@ -25,10 +25,23 @@
 
 - name: Create namespace
   k8s:
+    definition: "{{ lookup('template', 'namespace.yaml.j2') }}"
+    wait: yes
+
+- name: Create DockerHub image pull secret
+  k8s:
+    definition: "{{ lookup('template', 'secret-imagepull.yaml.j2') }}"
+    wait: yes
+  vars:
+    pull_name: dockerhub-pull-secret
+    pull_secret: "{{ fs_dockerhub_pullsecret }}"
+  when: fs_dockerhub_pullsecret|string|length > 0
+
+- name: Create namespace objects
+  k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
     wait: yes
   loop:
-  - namespace
   - serviceaccount
   - role
   - rolebinding-fs-sa

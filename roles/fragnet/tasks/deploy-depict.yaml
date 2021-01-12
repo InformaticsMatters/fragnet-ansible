@@ -1,16 +1,5 @@
 ---
 
-# Create a DockerHub image pull secret (if defined).
-
-- name: Create DockerHub image pull secret
-  k8s:
-    definition: "{{ lookup('template', 'secret-imagepull.yaml.j2') }}"
-    wait: yes
-  vars:
-    pull_name: dockerhub-pull-secret
-    pull_secret: "{{ fs_dockerhub_pullsecret }}"
-  when: fs_dockerhub_pullsecret|string|length > 0
-
 - name: Deploy Fragnet Depict objects
   k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"

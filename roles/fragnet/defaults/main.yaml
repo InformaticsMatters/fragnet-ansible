@@ -17,6 +17,7 @@ fs_image_tag: 0.5.6
 # A pull-secret for public images pulled from DockerHub.
 # If set this is the base-64 string that can be used as the value
 # in our Kubernetes Secret as the .dockerconfigjson value.
+# If set it is applied to the service account in the namespace.
 fs_dockerhub_pullsecret: ''
 # The namespace to deploy to
 fs_namespace: fragnet-search
