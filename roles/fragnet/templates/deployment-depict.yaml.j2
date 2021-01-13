@@ -1,0 +1,62 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: fragnet-depict
+  namespace: {{ fs_namespace }}
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: fragnet
+  template:
+    metadata:
+      labels:
+        name: fragnet
+    spec:
+      serviceAccountName: {{ fs_sa }}
+
+      # Avoid 'worker' nodes
+      # and prefer 'application' nodes
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: informaticsmatters.com/purpose
+                operator: NotIn
+                values:
+                - worker
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: informaticsmatters.com/purpose
+                operator: In
+                values:
+                - application
+
+      containers:
+      - name: fragnet-depict
+        image: {{ fs_flavour_depict_image }}:{{ fs_image_tag }}
+{% if fs_image_tag in ['latest', 'stable'] %}
+        imagePullPolicy: Always
+{% else %}
+        imagePullPolicy: IfNotPresent
+{% endif %}
+        terminationMessagePolicy: FallbackToLogsOnError
+        ports:
+        - containerPort: 8080
+          name: http
+        resources:
+          limits:
+{% if fs_depict_cpu_limit %}
+            cpu: {{ fs_depict_cpu_limit }}
+{% endif %}
+{% if fs_depict_mem_limit %}
+            memory: {{ fs_depict_mem_limit }}
+{% endif %}
+          requests:
+            cpu: {{ fs_depict_cpu_request }}
+            memory: {{ fs_depict_mem_request }}

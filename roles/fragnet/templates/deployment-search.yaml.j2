@@ -2,7 +2,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: fragnet-services
+  name: fragnet-search
   namespace: {{ fs_namespace }}
 spec:
   strategy:
@@ -38,8 +38,8 @@ spec:
                 - application
 
       containers:
-      - name: fragnet-services
-        image: {{ fs_flavour_services_image }}:{{ fs_image_tag }}
+      - name: fragnet-search
+        image: {{ fs_flavour_search_image }}:{{ fs_image_tag }}
 {% if fs_image_tag in ['latest', 'stable'] %}
         imagePullPolicy: Always
 {% else %}
@@ -60,35 +60,35 @@ spec:
           value: /logs
         resources:
           limits:
-{% if fs_service_cpu_limit %}
-            cpu: {{ fs_service_cpu_limit }}
+{% if fs_search_cpu_limit %}
+            cpu: {{ fs_search_cpu_limit }}
 {% endif %}
-{% if fs_service_mem_limit %}
-            memory: {{ fs_service_mem_limit }}
+{% if fs_search_mem_limit %}
+            memory: {{ fs_search_mem_limit }}
 {% endif %}
           requests:
-            cpu: {{ fs_service_cpu_request }}
-            memory: {{ fs_service_mem_request }}
+            cpu: {{ fs_search_cpu_request }}
+            memory: {{ fs_search_mem_request }}
         volumeMounts:
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/META-INF/context.xml
-          name: fs-config-map-services
+          name: fs-config-map-common
           subPath: context.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/keycloak.json
-          name: fs-config-map-services
+          name: fs-config-map-common
           subPath: keycloak.json
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/logging.properties
-          name: fs-config-map-services
+          name: fs-config-map-common
           subPath: logging.properties
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/web.xml
-          name: fs-config-map-services
+          name: fs-config-map-common
           subPath: web.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/server.xml
-          name: fs-config-map-services
+          name: fs-config-map-common
           subPath: server.xml
       volumes:
-      - name: fs-config-map-services
+      - name: fs-config-map-common
         configMap:
-          name: services
+          name: common

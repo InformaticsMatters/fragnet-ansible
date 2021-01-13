@@ -13,7 +13,7 @@
   debug:
     msg: Testing availability for '{{ molecule.molecule }}'...
 
-# Collect the availability results into a flat list.
+# Collect the availability results into a flat list.
 # So...
 #
 #   molecule: NC1CCCNC1
@@ -43,7 +43,7 @@
   vars:
     query: "results[*].results[*].smiles"
 
-# Splice code and SMILES together to form a string of "code/smiles"...
+# Splice code and SMILES together to form a string of "code/smiles"...
 # This just makes comparison of results a little easier.
 
 - name: Reset expected results
@@ -82,7 +82,7 @@
     validate_certs: "{{ fragnet_validate_certs|bool }}"
   register: availability_result
 
-# Collects the codes and SMILES strings returned
+# Collects the codes and SMILES strings returned
 # into flat lists (so we can easily compare with the expected results)
 
 - name: Collect available codes

@@ -1,12 +1,19 @@
 ---
 
-# Details of the Services image
-fs_flavour_services_image: squonk/fragnet-services
+# Details of the Depict and Search images (on Docker hub)
+fs_flavour_depict_image: docker.io/squonk/fragnet-depict
+fs_flavour_search_image: docker.io/squonk/fragnet-search
 # Details of the UI image (which needs an image pull-secret)
 fs_flavour_ui_image: registry.gitlab.com/informaticsmatters/fragnet-ui
 
+# The SSL/https certificate issuer.
+# One of production or staging.
 fs_cert_issuer: production
-fs_sa: fragnet-search
+
+# The Ingress (nginx) Body Size
+fs_ingress_nginx_proxy_body_size: 100m
+
+fs_sa: fragnet
 fs_sa_psp: im-core-unrestricted
 
 fs_pod_ready_timeout: 600
@@ -14,10 +21,15 @@ fs_pod_ready_timeout: 600
 # Pod requests and limits.
 # Requests are required, limits can be set to 0 to avoid a limit.
 
-fs_service_cpu_request: 1000m
-fs_service_cpu_limit: 1000m
-fs_service_mem_request: 4Gi
-fs_service_mem_limit: 8Gi
+fs_depict_cpu_request: 1000m
+fs_depict_cpu_limit: 1000m
+fs_depict_mem_request: 4Gi
+fs_depict_mem_limit: 8Gi
+
+fs_search_cpu_request: 1000m
+fs_search_cpu_limit: 1000m
+fs_search_mem_request: 4Gi
+fs_search_mem_limit: 8Gi
 
 fs_ui_cpu_request: 100m
 fs_ui_cpu_limit: 500m

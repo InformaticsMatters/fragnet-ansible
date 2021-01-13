@@ -3,17 +3,41 @@
 # Common playbook preparation.
 
 # Expose ansible version
-- debug:
+- name: Debug
+  debug:
     var: ansible_version.full
 
 # Basic pre-playbook prerequisites.
+# To support AWX changes we protect ourselves from trying to
+# install a package if it already exists. In the case of
+# kubernetes it's needed in AWX 11 but not in AWX 15.
 # We need the openshift/kubernetes module amongst other things...
+
+- name: Get built-in Python packages
+  command: pip freeze
+  register: freeze_result
+  changed_when: no
+
+- name: Collect built-in Python packages
+  set_fact:
+    builtin_python_packages: "{{ builtin_python_packages|default([]) + [item.split('==')[0]] }}"
+  loop: "{{ freeze_result.stdout_lines }}"
+
+- name: Display built-in Python packages
+  debug:
+    var: builtin_python_packages
+    verbosity: 3
 
 - name: Install prerequisite Python modules
   pip:
-    name:
-    - jmespath==0.9.4
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
     extra_args: --user
+  loop:
+  - { name: 'jmespath', version: '0.9.4' }
+  - { name: 'kubernetes', version: '10.0.1' }
+  - { name: 'openshift', version: '0.10.0' }
+  when: item.name not in builtin_python_packages
 
 # Install required Ansible Galaxy modules
 

@@ -24,7 +24,7 @@
     url: "{{ fs_ping }}"
     validate_certs: "{{ fragnet_validate_certs|bool }}"
 
-# For more complex tests we'll need an API token.
+# For more complex tests we'll need an API token.
 #
 # To get an API token we POST to Keycloak and pass in a number of 'parameters'
 # via the body. As the 'body' format is 'form-urlencoded' the following will
@@ -102,7 +102,7 @@
     that: fragnet_db_suppliers|length > 0
 
 # Now ...
-# Load graph-specific test variables
+# Load graph-specific test variables
 
 - name: Load graph-specific availability test variables
   include_vars: "{{ lookup('first_found', possible_files) }}"
