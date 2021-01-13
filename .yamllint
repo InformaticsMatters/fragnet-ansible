@@ -11,6 +11,7 @@ ignore: |
   roles/fragnet/templates/deployment-search.yaml.j2
   roles/fragnet/templates/deployment-ui.yaml.j2
   roles/fragnet/templates/ingress.yaml.j2
+  roles/fragnet/templates/serviceaccount.yaml.j2
 
 rules:
   indentation:
