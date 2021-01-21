@@ -30,10 +30,10 @@
 
 - name: Create DockerHub image pull secret
   k8s:
-    definition: "{{ lookup('template', 'secret-imagepull.yaml.j2') }}"
+    definition: "{{ lookup('template', 'secret-dh-imagepull.yaml.j2') }}"
     wait: yes
   vars:
-    pull_name: dockerhub-pull-secret
+    pull_namespace: "{{ fs_namespace }}"
     pull_secret: "{{ fs_dockerhub_pullsecret }}"
   when: fs_dockerhub_pullsecret|string|length > 0
 
@@ -46,7 +46,7 @@
   - role
   - rolebinding-fs-sa
 
-- name: Relax {{ fs_namespace }} 'default' service account (for cert-manager)
+- name: Relax {{ fs_namespace }}§ 'default' service account (for cert-manager)
   k8s:
     definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
     wait: yes
