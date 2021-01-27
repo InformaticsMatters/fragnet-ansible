@@ -8,6 +8,7 @@ data:
 
   config.json: |
     {
+      "DATA_MANAGER_API_SERVER": "https://{{ fs_location['api'].hostname }}{{ fs_location['api'].path }}",
       "FRAGNET_DEPICT_SERVER": "https://{{ fs_location['depict'].hostname }}{{ fs_location['depict'].path }}",
       "FRAGNET_SEARCH_SERVER": "https://{{ fs_location['search'].hostname }}{{ fs_location['search'].path }}",
       "GANALYTICS_ID": "{{ fs_ui_google_analytics_id }}"
