@@ -46,6 +46,19 @@ spec:
         imagePullPolicy: IfNotPresent
 {% endif %}
         terminationMessagePolicy: FallbackToLogsOnError
+        env:
+        - name: LOG_ROOT
+          value: /logs
+{% if fs_image_tag in ['latest', 'stable'] %}
+        # CICD_TRIGGER_ID is variable whose value is used to force
+        # a redeployment of the underlying pods. This is used in
+        # situations where the origin image's tag may not have changed
+        # (e.g. it's 'latest' or 'stable') but a new build is expected to
+        # be available. Without changing something in the Deployment spec
+        # a roll-out will not occur if the tag has not changed.
+        - name: CICD_TRIGGER_ID
+          value: '{{ ansible_date_time.iso8601_micro }}'
+{% endif %}
         ports:
         - containerPort: 8080
           name: http
