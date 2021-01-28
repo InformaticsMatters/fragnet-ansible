@@ -50,7 +50,7 @@ fs_location:
     path: /fragnet-search-api
   ui:
     hostname: squonk.it
-    path: /data-manager-ui
+    path: /fragnet-search-ui
   api:
     hostname: squonk.it
     path: /data-manager-api
