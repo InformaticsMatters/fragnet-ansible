@@ -42,4 +42,5 @@
     wait_timeout: "{{ fs_pod_ready_timeout }}"
   loop:
   - configmap-common
+  - configmap-keycloak-search
   - deployment-search

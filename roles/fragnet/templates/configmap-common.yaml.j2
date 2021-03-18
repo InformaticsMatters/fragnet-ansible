@@ -16,16 +16,6 @@ data:
       <Valve className="org.keycloak.adapters.tomcat.KeycloakAuthenticatorValve"/>
     </Context>
 
-  keycloak.json: |
-    {
-      "realm": "{{ fs_realm }}",
-      "auth-server-url": "{{ keycloak_server_url }}",
-      "ssl-required": "external",
-      "resource": "{{ fs_keycloak_client_id }}",
-      "public-client": true,
-      "confidential-port": 0
-    }
-
   logging.properties: |
     handlers = 1catalina.org.apache.juli.AsyncFileHandler, 2localhost.org.apache.juli.AsyncFileHandler, 3manager.org.apache.juli.AsyncFileHandler, 4host-manager.org.apache.juli.AsyncFileHandler, java.util.logging.ConsoleHandler
     .handlers = 1catalina.org.apache.juli.AsyncFileHandler, java.util.logging.ConsoleHandler

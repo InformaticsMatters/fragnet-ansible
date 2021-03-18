@@ -6,7 +6,8 @@
 
 # Adjust the Keycloak realm?
 
-- block:
+- name: Adjust keycloak realm
+  block:
 
   # Configure the Fragnet Search UI Keycloak Client.
   #

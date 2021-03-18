@@ -1,0 +1,17 @@
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: keycloak
+  namespace: {{ fs_namespace }}
+data:
+  keycloak.json: |
+    {
+      "realm": "{{ fs_realm }}",
+      "bearer-only": true,
+      "auth-server-url": "{{ keycloak_server_url }}",
+      "ssl-required": "external",
+      "resource": "{{ fs_keycloak_client_id }}",
+      "confidential-port": 0
+    }

@@ -36,7 +36,7 @@ fs_realm: squonk
 # into account when the app is removed. If fs_alter_realm is 'yes'
 # when you undeploy, the client ID and roles are removed.
 fs_alter_realm: no
-fs_keycloak_client_id: fragnet-search
+fs_keycloak_client_id: fragnet-search-api
 
 # Locations (hostnames and paths) for the various services
 # We need values for the depict, search, data manager UI and

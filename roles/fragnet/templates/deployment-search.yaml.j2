@@ -85,7 +85,7 @@ spec:
           subPath: context.xml
           readOnly: true
         - mountPath: /usr/local/tomcat/webapps/fragnet-search/WEB-INF/keycloak.json
-          name: fs-config-map-common
+          name: fs-config-map-keycloak
           subPath: keycloak.json
           readOnly: true
         - mountPath: /usr/local/tomcat/conf/logging.properties
@@ -102,3 +102,6 @@ spec:
       - name: fs-config-map-common
         configMap:
           name: common
+      - name: fs-config-map-keycloak
+        configMap:
+          name: keycloak
