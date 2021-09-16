@@ -7,9 +7,12 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-nginx-{{ fs_cert_issuer|lower }}"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($request_uri ~ "^/{{ fs_location[fs_flavour].path|string|basename }}(/.*)") {
+        proxy_pass http://upstream_balancer$1;
+        break;
+      }
     nginx.ingress.kubernetes.io/proxy-body-size: "{{ fs_ingress_nginx_proxy_body_size }}"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     # For a full set of nginx annotations see...
@@ -23,7 +26,7 @@ spec:
   - host: {{ fs_location[fs_flavour].hostname }}
     http:
       paths:
-      - path: /{{ fs_location[fs_flavour].path|string|basename }}(/|$)(.*)
+      - path: /{{ fs_location[fs_flavour].path|string|basename }}
         backend:
           serviceName: fragnet
           servicePort: http
