@@ -28,6 +28,7 @@ spec:
     http:
       paths:
       - path: /{{ fs_location[fs_flavour].path|string|basename }}
+        pathType: Prefix
         backend:
           serviceName: fragnet
           servicePort: http
