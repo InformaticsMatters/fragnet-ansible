@@ -2,4 +2,5 @@
 # Run the playbook with this and there's more chance it'll work
 # when run from within our AWX instance.
 ansible == 2.9.26
-openshift == 0.12.1
+kubernetes == 19.15.0
+openshift == 0.13.1

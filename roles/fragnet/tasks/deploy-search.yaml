@@ -35,7 +35,7 @@
 
 # OK - we have a graph, deploy the search container...
 
-- name: Deploy Fragnet Search objects
+- name: Deploy Fragnet Search objects (fs_image_tag={{ fs_image_tag }})
   k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
     wait: yes
