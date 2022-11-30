@@ -21,17 +21,17 @@ fs_pod_ready_timeout: 600
 # Pod requests and limits.
 # Requests are required, limits can be set to 0 to avoid a limit.
 
-fs_depict_cpu_request: 1000m
+fs_depict_cpu_request: 100m
 fs_depict_cpu_limit: 1000m
-fs_depict_mem_request: 4Gi
-fs_depict_mem_limit: 8Gi
+fs_depict_mem_request: 500Mi
+fs_depict_mem_limit: 1Gi
 
-fs_search_cpu_request: 1000m
+fs_search_cpu_request: 100m
 fs_search_cpu_limit: 1000m
-fs_search_mem_request: 4Gi
-fs_search_mem_limit: 8Gi
+fs_search_mem_request: 1Gi
+fs_search_mem_limit: 4Gi
 
-fs_ui_cpu_request: 100m
-fs_ui_cpu_limit: 500m
-fs_ui_mem_request: 2Gi
-fs_ui_mem_limit: 2Gi
+fs_ui_cpu_request: 250m
+fs_ui_cpu_limit: 250m
+fs_ui_mem_request: 500Mi
+fs_ui_mem_limit: 500Mi
