@@ -13,8 +13,6 @@ metadata:
         break;
       }
     nginx.ingress.kubernetes.io/proxy-body-size: "{{ fs_ingress_nginx_proxy_body_size }}"
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     # For a full set of nginx annotations see...
     # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
