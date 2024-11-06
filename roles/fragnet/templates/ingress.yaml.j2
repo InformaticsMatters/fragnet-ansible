@@ -5,15 +5,13 @@ metadata:
   name: fragnet
   namespace: {{ fs_namespace }}
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-nginx-{{ fs_cert_issuer|lower }}"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($request_uri ~ "^/{{ fs_location[fs_flavour].path|string|basename }}(/.*)") {
-        proxy_pass http://upstream_balancer$1;
-        break;
-      }
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://{{ fs_cors_allow_origin }}"
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
     nginx.ingress.kubernetes.io/proxy-body-size: "{{ fs_ingress_nginx_proxy_body_size }}"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     # For a full set of nginx annotations see...
     # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
 spec:
@@ -25,7 +23,7 @@ spec:
   - host: {{ fs_location[fs_flavour].hostname }}
     http:
       paths:
-      - path: /{{ fs_location[fs_flavour].path|string|basename }}
+      - path: /{{ fs_location[fs_flavour].path|string|basename }}(/|$)(.*)
         pathType: Prefix
         backend:
           service:
