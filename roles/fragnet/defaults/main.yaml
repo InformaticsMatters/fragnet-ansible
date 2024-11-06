@@ -54,6 +54,8 @@ fs_location:
   api:
     hostname: squonk.it
     path: /data-manager-api
+# The origin to permit for CORS
+fs_cors_allow_origin: squonk.it
 
 # The namespace the infrastructure is deployed to.
 # This will be where we can find Keycloak.
