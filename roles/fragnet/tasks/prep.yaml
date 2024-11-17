@@ -37,7 +37,7 @@
   - { name: 'jmespath', version: '0.9.4' }
   - { name: 'kubernetes', version: '10.0.1' }
   - { name: 'openshift', version: '0.10.0' }
-  when: item.name not in builtin_python_packages
+  when: fs_control_needs_kubernetes|bool
 
 # Install required Ansible Galaxy modules
 

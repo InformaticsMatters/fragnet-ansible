@@ -18,6 +18,9 @@ fs_sa_psp: im-core-unrestricted
 
 fs_pod_ready_timeout: 600
 
+# Dop we need to install the pre-requisite Python kubernetes and related package?
+fs_control_needs_kubernetes: no
+
 # Pod requests and limits.
 # Requests are required, limits can be set to 0 to avoid a limit.
 
