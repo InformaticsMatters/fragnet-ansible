@@ -36,5 +36,5 @@ fs_search_mem_limit: 4Gi
 
 fs_ui_cpu_request: 100m
 fs_ui_cpu_limit: 500m
-fs_ui_mem_request: 400Mi
-fs_ui_mem_limit: 400Mi
+fs_ui_mem_request: 600Mi
+fs_ui_mem_limit: 600Mi
