@@ -17,16 +17,6 @@ spec:
     spec:
       serviceAccountName: {{ fs_sa }}
 
-      # Avoid 'worker' nodes
-      # and prefer 'application' nodes
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: informaticsmatters.com/purpose-application
-                operator: Exists
-
       imagePullSecrets:
       - name: ui-pull-secret
 
