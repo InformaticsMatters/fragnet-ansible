@@ -37,10 +37,10 @@
 
 - name: Deploy Fragnet Search objects (fs_image_tag={{ fs_image_tag }})
   k8s:
-    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    definition: "{{ lookup('template', item) }}"
     wait: yes
     wait_timeout: "{{ fs_pod_ready_timeout }}"
   loop:
-  - configmap-common
-  - configmap-keycloak-search
-  - deployment-search
+  - configmap-common.yaml.j2
+  - configmap-keycloak-search.yaml.j2
+  - deployment-search.yaml.j2

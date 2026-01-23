@@ -4,68 +4,6 @@
   include_vars:
     file: pull-secrets.vault
 
-# Adjust the Keycloak realm?
-
-- name: Adjust keycloak realm
-  block:
-
-  # Configure the Fragnet Search UI Keycloak Client.
-  #
-  # The user is assumed to have created a realm
-  # and we simply need to add a Role to that realm and then
-  # register the Fragnet Search Client.
-
-  - name: Set client address
-    set_fact:
-      fs_client_hostname: "{{ fs_location['ui'].hostname }}{{ fs_location['ui'].path }}"
-
-  - name: Display client address
-    debug:
-      var: fs_client_hostname
-
-  - import_tasks: get-keycloak-realm-manager-credentials.yaml
-    vars:
-      realm_name: "{{ fs_realm }}"
-      realm_namespace: "{{ ir_namespace }}"
-
-  - name: Add realm roles
-    include_role:
-      name: informaticsmatters.infrastructure_user
-    vars:
-      iu_action: create
-      iu_type: role
-      iu_hostname: "{{ keycloak_server_url|urlsplit('hostname') }}"
-      iu_realm: "{{ fs_realm }}"
-      iu_realm_manager: "{{ keycloak_realm_manager_fact }}"
-      iu_realm_manager_password: "{{ keycloak_realm_manager_password_fact }}"
-      iu_roles:
-      - name: fragnet-search
-
-  - name: Add Keycloak Fragnet Search Client
-    keycloak_client:
-      auth_client_id: admin-cli
-      auth_keycloak_url: "{{ keycloak_server_url }}"
-      auth_realm: "{{ fs_realm }}"
-      auth_username: "{{ keycloak_realm_manager_fact }}"
-      auth_password: "{{ keycloak_realm_manager_password_fact }}"
-      realm: "{{ fs_realm }}"
-      client_id: "{{ fs_keycloak_client_id }}"
-      protocol: openid-connect
-      base_url: https://{{ fs_client_hostname }}
-      web_origins:
-      - https://{{ fs_client_hostname }}
-      redirect_uris:
-      - https://{{ fs_client_hostname }}/*
-      public_client: yes
-      service_accounts_enabled: yes
-      direct_access_grants_enabled: yes
-      standard_flow_enabled: yes
-      default_roles:
-      - fragnet-search
-    delegate_to: localhost
-
-  when: fs_alter_realm|bool
-
 # Create secret objects for each image pull secret defined.
 # These are typically used to pull container images
 # from private registries.
@@ -81,10 +19,10 @@
 
 - name: Deploy Fragnet UI objects
   k8s:
-    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    definition: "{{ lookup('template', item) }}"
     wait: yes
     wait_timeout: "{{ fs_pod_ready_timeout }}"
   loop:
-  - configmap-common
-  - configmap-ui
-  - deployment-ui
+  - configmap-common.yaml.j2
+  - configmap-ui.yaml.j2
+  - deployment-ui.yaml.j2
