@@ -6,7 +6,6 @@ metadata:
   namespace: {{ fs_namespace }}
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-nginx-{{ fs_cert_issuer|lower }}"
-    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/cors-allow-origin: "https://{{ fs_cors_allow_origin }}"
     nginx.ingress.kubernetes.io/enable-cors: 'true'
     nginx.ingress.kubernetes.io/proxy-body-size: "{{ fs_ingress_nginx_proxy_body_size }}"
@@ -15,6 +14,7 @@ metadata:
     # For a full set of nginx annotations see...
     # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - {{ fs_location[fs_flavour].hostname }}

@@ -39,13 +39,6 @@
   - { name: 'openshift', version: '0.10.0' }
   when: fs_control_needs_kubernetes|bool
 
-# Install required Ansible Galaxy modules
-
-- name: Install Ansible Galaxy modules
-  command: ansible-galaxy install -r infrastructure-realm-requirements.yaml
-  register: ag_result
-  changed_when: "'downloading role' in ag_result.stdout"
-
 # Kubernetes credentials ------------------------------------------------------
 
 # We don't use the Kubernetes credentials directly,

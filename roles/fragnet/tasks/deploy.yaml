@@ -39,17 +39,10 @@
 
 - name: Create namespace objects
   k8s:
-    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    definition: "{{ lookup('template', item) }}"
     wait: yes
   loop:
-  - serviceaccount
-  - role
-  - rolebinding-fs-sa
-
-- name: Relax {{ fs_namespace }}§ 'default' service account (for cert-manager)
-  k8s:
-    definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
-    wait: yes
+  - serviceaccount.yaml.j2
 
 # Deploy Search, Depict or UI?
 

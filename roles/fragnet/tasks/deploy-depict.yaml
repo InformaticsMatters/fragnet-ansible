@@ -2,8 +2,8 @@
 
 - name: Deploy Fragnet Depict objects
   k8s:
-    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    definition: "{{ lookup('template', item) }}"
     wait: yes
     wait_timeout: "{{ fs_pod_ready_timeout }}"
   loop:
-  - deployment-depict
+  - deployment-depict.yaml.j2
